@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<bean id="dwTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dwDataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="dwTransactionManager"/>
+	
+	<aop:aspectj-autoproxy/>
+
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean id="menuDtoConverter" class="com.target.trak.system.service.dto.converters.MenuDtoConverter" />
+				<bean id="userDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.UserDtoToEntityConverter">
+					<property name="encoder" ref="encoder" />
+				</bean>
+				<bean id="userEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.UserEntityToDtoConverter" />
+				<bean id="roleEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.RoleEntityToDtoConverter" />
+				<bean id="referenceDataEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.ReferenceDataEntityToDtoConverter" />
+				<bean id="referenceDataDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.ReferenceDataDtoToEntityConverter" />
+				<bean id="referenceDataSearchCriteriaDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.ReferenceDataSearchCriteriaDtoToEntityConverter" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="menuService" class="com.target.trak.system.service.impl.security.menu.MenuServiceImpl">
+		<property name="menuDao" ref="menuDao" />
+		<property name="conversionService" ref="conversionService" />
+	</bean>
+
+	<bean id="registrationService" class="com.target.trak.system.service.impl.security.registration.RegistrationServiceImpl">
+		<property name="userDetailsDao" ref="userDetailsDao" />
+		<property name="conversionService" ref="conversionService" />
+		<property name="validator" ref="userRegistrationValidator" />
+	</bean>
+	
+	<bean id="referenceDataService" class="com.target.trak.system.service.impl.referencedata.ReferenceDataServiceImpl">
+		<property name="conversionService" ref="conversionService" />
+		<property name="referenceDataDao" ref="referenceDataDao" />
+		<property name="validator" ref="referenceDataValidator" />
+	</bean>
+	
+</beans>
