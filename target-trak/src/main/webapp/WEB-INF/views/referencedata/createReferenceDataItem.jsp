@@ -5,7 +5,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <tiles:insertDefinition name="bootstrap">
 	<tiles:putAttribute name="content">
-		<form:form method="POST" action="/target-trak/createReferenceDataItem.htm" modelAttribute="createReferenceDataForm">	
+		<form:form method="POST" action="/target-trak/createReferenceDataItem.htm" modelAttribute="createReferenceDataForm">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>	
 	        <div class="row">
             	<div class="col-lg-offset-0">
 	            	<div class="panel panel-default">

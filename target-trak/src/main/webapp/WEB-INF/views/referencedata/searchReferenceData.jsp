@@ -4,7 +4,8 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <tiles:insertDefinition name="bootstrap">
 	<tiles:putAttribute name="content">
-		<form:form method="POST" action="/target-trak/searchReferenceDataByCriteria.htm" modelAttribute="searchReferenceDataForm">	
+		<form:form method="POST" action="/target-trak/searchReferenceDataByCriteria.htm" modelAttribute="searchReferenceDataForm">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>	
 	        <div class="row">
 	            <div class="col-lg-offset-0">
 	            	<div class="panel panel-default">

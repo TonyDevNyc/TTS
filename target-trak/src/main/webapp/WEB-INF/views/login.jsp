@@ -22,7 +22,12 @@
             		<c:if test="${not empty param.accessdenied}">
             			<p class="text-danger text-center">Access Denied!</p>
             		</c:if>
-            		
+            		<c:if test="${not empty param.sessiontimeout}">
+            			<p class="text-danger text-center">You have logged out due to inactivity.</p>
+            		</c:if>
+            		<c:if test="${not empty param.logout}">
+            			<p class="text-success text-center">You have been successfully logged out.</p>
+            		</c:if>
                		<c:url var="loginUrl" value="/j_spring_security_check"/>
                		<form class="form-signin" role="form" method="POST" action="${loginUrl}">
                			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
