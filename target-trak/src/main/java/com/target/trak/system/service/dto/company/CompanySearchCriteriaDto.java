@@ -1,6 +1,8 @@
-package com.target.trak.system.entity.criteria;
+package com.target.trak.system.service.dto.company;
 
-public class CompanySearchCriteria extends BaseSearchCriteria {
+import com.target.trak.system.service.dto.common.TargetTrakPagingCriteria;
+
+public class CompanySearchCriteriaDto extends TargetTrakPagingCriteria {
 
 	private String name;
 	private String state;

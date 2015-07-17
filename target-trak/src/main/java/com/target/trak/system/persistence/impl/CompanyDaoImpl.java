@@ -47,9 +47,9 @@ public class CompanyDaoImpl implements CompanyDao {
 		params.addValue("zipcode", company.getZipcode());
 		params.addValue("country", company.getCountry());
 		params.addValue("createdBy", company.getCreatedBy());
-		params.addValue("createdTimestamp", company.getCreatedTimestamp());
+		params.addValue("createdTs", company.getCreatedTimestamp());
 		params.addValue("lastUpdatedBy", company.getLastUpdatedBy());
-		params.addValue("lastUpdatedTimestamp", company.getLastUpdatedTimestamp());
+		params.addValue("lastUpdatedTs", company.getLastUpdatedTimestamp());
 
 		String sql = companyQueries.getProperty("insertCompanySql");
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -65,9 +65,9 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 
 	@Override
-	public Company selectCompanyById(final Company company) {
+	public Company selectCompanyById(final Long id) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("id", company.getId());
+		params.addValue("id", id);
 		String sql = companyQueries.getProperty("selectCompanyByIdSql");
 		return companyTemplate.queryForObject(sql, params, new CompanyRowMapper());
 	}
@@ -80,7 +80,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 
 	@Override
-	public int selectPaginatedCompaniesCount(final CompanySearchCriteria criteria) {
+	public int selectPaginatedCompaniesByCriteriaCount(final CompanySearchCriteria criteria) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		String sql = companyQueryBuilder.buildPagingQueryCountByCriteria(criteria, params);
 		return companyTemplate.queryForObject(sql, params, Integer.class);
@@ -97,8 +97,10 @@ public class CompanyDaoImpl implements CompanyDao {
 		params.addValue("zipcode", company.getZipcode());
 		params.addValue("country", company.getCountry());
 		params.addValue("lastUpdatedBy", company.getLastUpdatedBy());
-		params.addValue("lastUpdatedTimestamp", company.getLastUpdatedTimestamp());
+		params.addValue("lastUpdatedTs", company.getLastUpdatedTimestamp());
 		params.addValue("id", company.getId());
+		params.addValue("updatedVersion", company.getVersion()+1);
+		params.addValue("version", company.getVersion());
 
 		String sql = companyQueries.getProperty("updateCompanySql");
 		int count = companyTemplate.update(sql, params);
@@ -153,9 +155,10 @@ public class CompanyDaoImpl implements CompanyDao {
 			company.setCountry(rs.getString("country"));
 			company.setZipcode(rs.getString("zipcode"));
 			company.setCreatedBy(rs.getString("created_by"));
-			company.setCreatedTimestamp(rs.getTimestamp("created_timestamp"));
+			company.setCreatedTimestamp(rs.getTimestamp("created_ts"));
 			company.setLastUpdatedBy(rs.getString("last_updated_by"));
-			company.setLastUpdatedTimestamp(rs.getTimestamp("last_updated_timestamp"));
+			company.setLastUpdatedTimestamp(rs.getTimestamp("last_updated_ts"));
+			company.setVersion(rs.getInt("version"));
 			return company;
 		}
 	}

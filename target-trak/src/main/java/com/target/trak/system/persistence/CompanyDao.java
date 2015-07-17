@@ -9,11 +9,11 @@ public interface CompanyDao {
 
 	public Company insertCompany(final Company company);
 
-	public Company selectCompanyById(final Company company);
+	public Company selectCompanyById(final Long id);
 
 	public List<Company> selectPaginatedCompaniesByCriteria(final CompanySearchCriteria criteria);
 
-	public int selectPaginatedCompaniesCount(final CompanySearchCriteria criteria);
+	public int selectPaginatedCompaniesByCriteriaCount(final CompanySearchCriteria criteria);
 
 	public Company updateCompany(final Company company);
 	
