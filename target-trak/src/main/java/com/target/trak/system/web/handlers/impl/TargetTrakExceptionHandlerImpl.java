@@ -23,8 +23,9 @@ public class TargetTrakExceptionHandlerImpl implements ExceptionHandler {
 		}
 		
 		FieldError fieldError = null;
+		String errorMsg = null;
 		for (TargetTrakValidationError validationError : validationErrors) {
-			String errorMsg = bindErrorMessage(validationError.getErrorMessage());
+			errorMsg = bindErrorMessage(validationError.getErrorMessage());
 			fieldError = new FieldError(formName, validationError.getFieldName(), errorMsg);
 			result.addError(fieldError);
 		}
