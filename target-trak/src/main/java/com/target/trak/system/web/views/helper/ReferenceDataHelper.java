@@ -9,7 +9,7 @@ import com.target.trak.system.web.forms.SearchReferenceDataForm;
 import com.target.trak.system.web.views.NameValuePair;
 import com.target.trak.system.web.views.ReferenceDataItem;
 
-public interface ReferenceDataViewHelper {
+public interface ReferenceDataHelper {
 
 	public List<ReferenceDataItem> buildReferenceDataList(final List<ReferenceDataDto> dtos);
 	
@@ -22,4 +22,6 @@ public interface ReferenceDataViewHelper {
 	public ReferenceDataItem buildReferenceDataItem(final ReferenceDataDto referenceData);
 	
 	public List<NameValuePair> buildNameValuePairList(final List<ReferenceDataDto> referenceDataList);
+	
+	public List<NameValuePair> getReferenceDataByType(final String referenceDataType);
 }
