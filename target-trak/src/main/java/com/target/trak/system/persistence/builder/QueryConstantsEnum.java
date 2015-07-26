@@ -12,8 +12,11 @@ public enum QueryConstantsEnum {
 	DESCENDING_ORDER(" DESC "),
 	LIMIT_CLAUSE(" LIMIT "),
 	COMMA(","),
-	EMPTY_SPACE(" ");
-
+	EMPTY_SPACE(" "),
+	OPEN_PARENTHESIS(" ( "),
+	CLOSE_PARENTHESIS(" ) "),
+	OR (" OR ");
+	
 	public String value;
 
 	public String getValue() {

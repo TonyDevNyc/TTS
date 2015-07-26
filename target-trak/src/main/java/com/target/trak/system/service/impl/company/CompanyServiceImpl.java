@@ -60,7 +60,7 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 	}
 
 	@Override
-	public CompanyApiResponse selectCompanyByCriteria(final CompanyApiRequest request) {
+	public CompanyApiResponse getCompaniesByCriteria(final CompanyApiRequest request) {
 		CompanyApiResponse response = new CompanyApiResponse();
 		CompanySearchCriteria criteria = conversionService.convert(request.getCompanySearchCriteria(), CompanySearchCriteria.class);
 

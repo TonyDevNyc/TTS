@@ -23,6 +23,7 @@ public class CompanyEntityToDtoConverter implements Converter<Company, CompanyDt
 		dto.setCreatedDate(DateUtil.convertTimestampToCalendar(entity.getCreatedTimestamp()));
 		dto.setLastUpdatedBy(entity.getLastUpdatedBy());
 		dto.setLastUpdatedDate(DateUtil.convertTimestampToCalendar(entity.getLastUpdatedTimestamp()));
+		dto.setVersion(entity.getVersion());
 		return dto;
 	}
 

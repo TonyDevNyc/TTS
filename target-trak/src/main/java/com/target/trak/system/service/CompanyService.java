@@ -7,7 +7,7 @@ public interface CompanyService {
 
 	public CompanyApiResponse createCompany(final CompanyApiRequest request);
 	
-	public CompanyApiResponse selectCompanyByCriteria(final CompanyApiRequest request);
+	public CompanyApiResponse getCompaniesByCriteria(final CompanyApiRequest request);
 	
 	public CompanyApiResponse updateCompany(final CompanyApiRequest request);
 	

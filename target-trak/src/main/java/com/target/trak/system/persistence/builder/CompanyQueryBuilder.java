@@ -14,6 +14,8 @@ public class CompanyQueryBuilder {
 	private static final String STATE_COLUMN = "state";
 	private static final String COUNTRY_COLUMN = "country";
 	private static final String CITY_COLUMN = "city";
+	private static final String CREATED_BY_COLUMN = "created_by";
+	private static final String LAST_UPDATED_BY_COLUMN = "last_updated_by";
 	private static final String DEFAULT_SORT_ORDER = " ORDER BY name ASC ";
 
 	private Logger logger = Logger.getLogger(getClass());
@@ -22,34 +24,45 @@ public class CompanyQueryBuilder {
 
 	public String buildPagingQueryCountByCriteria(final CompanySearchCriteria criteria, final MapSqlParameterSource params) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(companyQueries.get("selectBaseCountReferenceDataSql"));
+		builder.append(companyQueries.get("selectBaseCountCompanySql"));
 		builder.append(QueryConstantsEnum.WHERE_CLAUSE.value).append(QueryConstantsEnum.EMPTY_SPACE.value);
 
-		if (!StringUtils.isEmpty(criteria.getName())) {
-			builder.append(QueryConstantsEnum.AND.value).append(NAME_COLUMN)
-				.append(QueryConstantsEnum.LIKE.value)
-				.append(":name");
-			params.addValue("name", buildWildcardParameter(criteria.getName()));
+		if (!StringUtils.isEmpty(criteria.getText())) {
+			builder.append(QueryConstantsEnum.AND.value);
+			
+			builder.append(QueryConstantsEnum.OPEN_PARENTHESIS.value);
+			
+			// name 
+			builder.append(NAME_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":name");
+			params.addValue("name", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// state
+			builder.append(STATE_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":state");
+			params.addValue("state", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			//country
+			builder.append(COUNTRY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":country");
+			params.addValue("country", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// city
+			builder.append(CITY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":city");
+			params.addValue("city", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// createdBy
+			builder.append(CREATED_BY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":createdBy");
+			params.addValue("createdBy", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// lastUpdatedBy
+			builder.append(LAST_UPDATED_BY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":lastUpdatedBy");
+			params.addValue("lastUpdatedBy", buildWildcardParameter(criteria.getText()));
+			
+			builder.append(QueryConstantsEnum.CLOSE_PARENTHESIS.value);
 		}
-
-		if (!StringUtils.isEmpty(criteria.getState())) {
-			builder.append(QueryConstantsEnum.AND.value).append(STATE_COLUMN).append(QueryConstantsEnum.EQUALS.value).append(":state");
-			params.addValue("state", criteria.getState());
-		}
-
-		if (!StringUtils.isEmpty(criteria.getCountry())) {
-			builder.append(QueryConstantsEnum.AND.value).append(COUNTRY_COLUMN).append(QueryConstantsEnum.EQUALS.value).append(":country");
-			params.addValue("country", criteria.getCountry());
-		}
-		
-		if (!StringUtils.isEmpty(criteria.getCity())) {
-			builder.append(QueryConstantsEnum.AND.value)
-				.append(CITY_COLUMN)
-				.append(QueryConstantsEnum.EQUALS.value)
-				.append(":city");
-			params.addValue("city", criteria.getCity());
-		}
-
 		logger.info("Company Paging Count Query Built: " + builder.toString());
 		return builder.toString();
 	}
@@ -59,29 +72,41 @@ public class CompanyQueryBuilder {
 		builder.append(companyQueries.get("baseCompanySql"));
 		builder.append(QueryConstantsEnum.WHERE_CLAUSE.value).append(QueryConstantsEnum.EMPTY_SPACE.value);
 
-		if (!StringUtils.isEmpty(criteria.getName())) {
-			builder.append(QueryConstantsEnum.AND.value).append(NAME_COLUMN)
-				.append(QueryConstantsEnum.LIKE.value)
-				.append(":name");
-			params.addValue("name", buildWildcardParameter(criteria.getName()));
-		}
-
-		if (!StringUtils.isEmpty(criteria.getState())) {
-			builder.append(QueryConstantsEnum.AND.value).append(STATE_COLUMN).append(QueryConstantsEnum.EQUALS.value).append(":state");
-			params.addValue("state", criteria.getState());
-		}
-
-		if (!StringUtils.isEmpty(criteria.getCountry())) {
-			builder.append(QueryConstantsEnum.AND.value).append(COUNTRY_COLUMN).append(QueryConstantsEnum.EQUALS.value).append(":country");
-			params.addValue("country", criteria.getCountry());
-		}
-		
-		if (!StringUtils.isEmpty(criteria.getCity())) {
-			builder.append(QueryConstantsEnum.AND.value)
-				.append(CITY_COLUMN)
-				.append(QueryConstantsEnum.EQUALS.value)
-				.append(":city");
-			params.addValue("city", criteria.getCity());
+		if (!StringUtils.isEmpty(criteria.getText())) {
+			builder.append(QueryConstantsEnum.AND.value);
+			
+			builder.append(QueryConstantsEnum.OPEN_PARENTHESIS.value);
+			
+			// name 
+			builder.append(NAME_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":name");
+			params.addValue("name", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// state
+			builder.append(STATE_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":state");
+			params.addValue("state", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			//country
+			builder.append(COUNTRY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":country");
+			params.addValue("country", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// city
+			builder.append(CITY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":city");
+			params.addValue("city", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// createdBy
+			builder.append(CREATED_BY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":createdBy");
+			params.addValue("createdBy", buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// lastUpdatedBy
+			builder.append(LAST_UPDATED_BY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":lastUpdatedBy");
+			params.addValue("lastUpdatedBy", buildWildcardParameter(criteria.getText()));
+			
+			builder.append(QueryConstantsEnum.CLOSE_PARENTHESIS.value);
 		}
 
 		if (StringUtils.isEmpty(criteria.getSortField())) {

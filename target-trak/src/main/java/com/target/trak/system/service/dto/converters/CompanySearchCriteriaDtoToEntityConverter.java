@@ -10,12 +10,7 @@ public class CompanySearchCriteriaDtoToEntityConverter implements Converter<Comp
 	@Override
 	public CompanySearchCriteria convert(CompanySearchCriteriaDto dto) {
 		CompanySearchCriteria criteria = new CompanySearchCriteria();
-		criteria.setName(dto.getName());
-		criteria.setCity(dto.getCity());
-		criteria.setState(dto.getState());
-		criteria.setCountry(dto.getCountry());
-		criteria.setLastUpdatedBy(dto.getLastUpdatedBy());
-		criteria.setCreatedBy(dto.getCreatedBy());
+		criteria.setText(dto.getText());
 		criteria.setPage(dto.getPage());
 		criteria.setStart(dto.getStart());
 		criteria.setEnd(dto.getEnd());
