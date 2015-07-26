@@ -21,7 +21,7 @@
 			FROM target_trak_dw.company
        ]]>
 	</entry>
-	<entry key="selectBaseCountReferenceDataSql">
+	<entry key="selectBaseCountCompanySql">
 	    <![CDATA[
 	     	SELECT COUNT(1) FROM target_trak_dw.company 
        ]]>
