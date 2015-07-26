@@ -61,7 +61,9 @@
 		<property name="targetTrakExceptionHandler" ref="targetTrakExceptionHandler" />
 	</bean>
 	
-	<bean id="referenceDataViewHelper" class="com.target.trak.system.web.views.helper.impl.ReferenceDataViewHelperImpl" />
+	<bean id="referenceDataViewHelper" class="com.target.trak.system.web.views.helper.impl.ReferenceDataHelperImpl">
+		<property name="referenceDataService" ref="referenceDataService" />
+	</bean>
 	
 	<bean id="referenceDataController" class="com.target.trak.system.web.controllers.refdata.ReferenceDataController">
 		<property name="referenceDataService" ref="referenceDataService" />
@@ -76,4 +78,18 @@
 	<bean id="pagingBuilder" class="com.target.trak.system.web.builders.impl.PaginationBuilderImpl">
 		<property name="pagingProperties" ref="pagingProps" />
 	</bean>
+	
+	<bean id="companyViewHelper" class="com.target.trak.system.web.views.helper.impl.CompanyHelperImpl">
+		<property name="companyService" ref="companyService" />
+	</bean>
+	
+	<bean id="companyController" class="com.target.trak.system.web.controllers.company.CompanyController">
+		<property name="companyService" ref="companyService" />
+		<property name="userService" ref="targetTrakUserDetailsService" />
+		<property name="pagingBuilder" ref="pagingBuilder" />
+		<property name="targetTrakExceptionHandler" ref="targetTrakExceptionHandler" />
+		<property name="viewHelper" ref="referenceDataViewHelper" />
+		<property name="companyViewHelper" ref="companyViewHelper" />
+	</bean>
+
 </beans>

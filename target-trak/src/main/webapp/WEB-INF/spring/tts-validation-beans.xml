@@ -43,7 +43,13 @@
 		<property name="userDetailsDao" ref="userDetailsDao" />
 	</bean>
 
-	<bean id="addressRules" class="com.target.trak.system.validations.rules.impl.AddressRulesImpl" />
+	<bean id="addressRules" class="com.target.trak.system.validations.rules.impl.AddressRulesImpl">
+		<property name="validationProps" ref="dwValidationProps" />
+	</bean>
+	
+	<bean id="companyRules" class="com.target.trak.system.validations.rules.impl.CompanyRulesImpl">
+		<property name="validationProps" ref="dwValidationProps" />
+	</bean>
 	
 	<bean id="userRegistrationValidator" class="com.target.trak.system.validations.impl.UserRegistrationValidatorImpl">
 		<property name="usernameRules" ref="usernameRules" />
@@ -56,6 +62,11 @@
 
 	<bean id="referenceDataValidator" class="com.target.trak.system.validations.impl.ReferenceDataValidatorImpl">
 		<constructor-arg ref="referenceDataRules" />
+	</bean>
+	
+	<bean id="companyValidator" class="com.target.trak.system.validations.impl.CompanyValidatorImpl">
+		<property name="addressRules" ref="addressRules" />
+		<property name="companyRules" ref="companyRules" />
 	</bean>
 	
 </beans>

@@ -31,6 +31,10 @@
 				<bean id="referenceDataEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.ReferenceDataEntityToDtoConverter" />
 				<bean id="referenceDataDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.ReferenceDataDtoToEntityConverter" />
 				<bean id="referenceDataSearchCriteriaDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.ReferenceDataSearchCriteriaDtoToEntityConverter" />
+				<bean id="companyDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.CompanyDtoToEntityConverter" />
+				<bean id="companyEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.CompanyEntityToDtoConverter" />
+				<bean id="companySearchCriteriaDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.CompanySearchCriteriaDtoToEntityConverter" />
+				
 			</set>
 		</property>
 	</bean>
@@ -52,4 +56,9 @@
 		<property name="validator" ref="referenceDataValidator" />
 	</bean>
 	
+	<bean id="companyService" class="com.target.trak.system.service.impl.company.CompanyServiceImpl">
+		<property name="companyDao" ref="companyDao" />
+		<property name="conversionService" ref="conversionService" />
+		<property name="validator" ref="companyValidator" />
+	</bean>
 </beans>
