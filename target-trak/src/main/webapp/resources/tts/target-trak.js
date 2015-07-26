@@ -37,4 +37,16 @@ function cancelEditReferenceData() {
 	$("#editRefDataForm").submit();
 }
 
-	
+function backToCompanySearchResults() {
+	$("#viewCompanyItemForm").attr("action", '/target-trak/backToCompanySearchResults.htm');
+	$("#viewCompanyItemForm").submit();
+}
+
+function cancelEditCompany() {
+	$("#editCompanyForm").attr("action", '/target-trak/cancelEditCompany.htm');
+	$("#editCompanyForm").submit();
+}
+
+function submitCompanySearchForm() {
+	$("#searchCompanyForm").submit();
+}
