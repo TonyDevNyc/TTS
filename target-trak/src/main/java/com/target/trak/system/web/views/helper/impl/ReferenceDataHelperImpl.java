@@ -4,17 +4,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.target.trak.system.security.entity.User;
+import com.target.trak.system.service.ReferenceDataService;
 import com.target.trak.system.service.dto.referencedata.ReferenceDataApiRequest;
+import com.target.trak.system.service.dto.referencedata.ReferenceDataApiResponse;
 import com.target.trak.system.service.dto.referencedata.ReferenceDataDto;
 import com.target.trak.system.service.dto.referencedata.ReferenceDataSearchCriteriaDto;
 import com.target.trak.system.util.DateUtil;
 import com.target.trak.system.web.forms.SearchReferenceDataForm;
 import com.target.trak.system.web.views.NameValuePair;
 import com.target.trak.system.web.views.ReferenceDataItem;
-import com.target.trak.system.web.views.helper.ReferenceDataViewHelper;
+import com.target.trak.system.web.views.helper.ReferenceDataHelper;
 
-public class ReferenceDataViewHelperImpl implements ReferenceDataViewHelper {
+public class ReferenceDataHelperImpl implements ReferenceDataHelper {
+	
+	private static final Logger logger = Logger.getLogger(ReferenceDataHelperImpl.class);
+	
+	private ReferenceDataService referenceDataService;
 
 	@Override
 	public List<ReferenceDataItem> buildReferenceDataList(final List<ReferenceDataDto> referenceDataList) {
@@ -57,7 +65,7 @@ public class ReferenceDataViewHelperImpl implements ReferenceDataViewHelper {
 		int page = searchReferenceDataForm.getPage();
 		searchCriteria.setPage(page == 0 ? 1 : page);
 		int start = searchReferenceDataForm.getStart();
-		searchCriteria.setStart(start == 0 ? 1 : start);
+		searchCriteria.setStart(start);
 		searchCriteria.setEnd(10);
 		request.setSearchCriteria(searchCriteria);
 		return request;
@@ -102,5 +110,26 @@ public class ReferenceDataViewHelperImpl implements ReferenceDataViewHelper {
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public List<NameValuePair> getReferenceDataByType(final String referenceDataType) {
+		ReferenceDataApiResponse response = null;
+		ReferenceDataApiRequest request = new ReferenceDataApiRequest();
+		ReferenceDataDto dto = new ReferenceDataDto();
+		dto.setType(referenceDataType);
+		request.setReferenceDataDto(dto);
+		List<NameValuePair> list = null;
+		try {
+			response = referenceDataService.getReferenceDataByType(request);
+			list = buildNameValuePairList(response.getReferenceDataList());
+		} catch (Throwable e) {
+			logger.error(e);
+		}
+		return list;
+	}
+
+	public void setReferenceDataService(ReferenceDataService referenceDataService) {
+		this.referenceDataService = referenceDataService;
 	}
 }
