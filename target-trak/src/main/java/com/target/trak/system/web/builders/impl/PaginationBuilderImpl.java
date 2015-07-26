@@ -15,7 +15,7 @@ public class PaginationBuilderImpl implements PaginationBuilder {
 
 	private static final int NUMBER_OF_ROWS_SHOWN = 10;
 
-	private static final int FIRST_PAGE = 1;
+	private static final int FIRST_PAGE = 0;
 
 	private static final String ACTIVE_CSS = "active";
 
@@ -26,14 +26,14 @@ public class PaginationBuilderImpl implements PaginationBuilder {
 	private Logger logger = Logger.getLogger(getClass());
 
 	@Override
-	public PaginationBean buildPaginationBean(final int requestedPage, final int totalSize) {
+	public PaginationBean buildPaginationBean(final int requestedPage, final int totalSize, final String paginationLink) {
 		PaginationBean pagingBean = new PaginationBean();
 		int numberOfPages = getTotalNumberOfPages(totalSize);
 		pagingBean.setTotalNumberPages(numberOfPages);
 
 		if (numberOfPages > 1) {
 			pagingBean.setCurrentPage(requestedPage);
-			List<Page> pages = buildListOfPages(requestedPage, numberOfPages, totalSize);
+			List<Page> pages = buildListOfPages(requestedPage, numberOfPages, totalSize, paginationLink);
 			Collections.sort(pages);
 			pagingBean.setPagesDisplayed(pages);
 
@@ -43,28 +43,28 @@ public class PaginationBuilderImpl implements PaginationBuilder {
 		return pagingBean;
 	}
 
-	private List<Page> buildListOfPages(final int requestedPage, final int numberOfPages, final int totalSize) {
+	private List<Page> buildListOfPages(final int requestedPage, final int numberOfPages, final int totalSize, final String paginationLink) {
 		List<Page> pages = new ArrayList<Page>();
 		int pageIndex = 1;
-		pages.add(buildPreviousPage(requestedPage, totalSize));
+		pages.add(buildPreviousPage(requestedPage, totalSize, paginationLink));
 
 		int itemIndex = 2;
 		Page page = null;
 		while (pageIndex <= numberOfPages) {
-			page = buildPage(requestedPage, pageIndex, totalSize);
+			page = buildPage(requestedPage, pageIndex, totalSize, paginationLink);
 			page.setOrder(itemIndex);
 			pages.add(page);
 			pageIndex++;
 			itemIndex++;
 		}
 
-		Page nextPage = buildNextPage(requestedPage, totalSize, numberOfPages);
+		Page nextPage = buildNextPage(requestedPage, totalSize, numberOfPages, paginationLink);
 		nextPage.setOrder(itemIndex);
 		pages.add(nextPage);
 		return pages;
 	}
 
-	private Page buildPreviousPage(final int requestedPage, final int totalSize) {
+	private Page buildPreviousPage(final int requestedPage, final int totalSize, final String paginationLink) {
 		Page previousPage = new Page();
 		previousPage.setPageText("<< Previous");
 		previousPage.setOrder(1);
@@ -74,12 +74,12 @@ public class PaginationBuilderImpl implements PaginationBuilder {
 			previousPage.setLink("#");
 		} else {
 			previousPage.setCssClass("");
-			previousPage.setLink(buildPaginationLink((requestedPage - 1), totalSize));
+			previousPage.setLink(buildPaginationLink((requestedPage - 1), totalSize, paginationLink));
 		}
 		return previousPage;
 	}
 
-	private Page buildNextPage(final int requestedPage, final int totalSize, final int numberOfPages) {
+	private Page buildNextPage(final int requestedPage, final int totalSize, final int numberOfPages, final String paginationLink) {
 		Page previousPage = new Page();
 		previousPage.setPageText("Next >>");
 		if (requestedPage == numberOfPages) {
@@ -89,23 +89,25 @@ public class PaginationBuilderImpl implements PaginationBuilder {
 		} else {
 			previousPage.setPageNumber(requestedPage + 1);
 			previousPage.setCssClass("");
-			previousPage.setLink(buildPaginationLink((requestedPage + 1), totalSize));
+			previousPage.setLink(buildPaginationLink((requestedPage + 1), totalSize, paginationLink));
 		}
 		return previousPage;
 	}
 
-	private Page buildPage(final int requestedPage, int pageNumber, final int totalSize) {
+	private Page buildPage(final int requestedPage, int pageNumber, final int totalSize, final String paginationLink) {
 		Page page = new Page();
 		page.setPageNumber(pageNumber);
 		page.setPageText(String.valueOf(pageNumber));
 		page.setCssClass(requestedPage == pageNumber ? ACTIVE_CSS : "");
-		page.setLink(buildPaginationLink(pageNumber, totalSize));
+		page.setLink(buildPaginationLink(pageNumber, totalSize, paginationLink));
 		return page;
 	}
 
-	private String buildPaginationLink(int page, int totalSize) {
+	private String buildPaginationLink(int page, int totalSize, final String paginationLink) {
 		StringBuilder bldr = new StringBuilder();
-		bldr.append("/target-trak/getPagedReferenceData.htm").append("?page=").append(page).append("&start=").append(getStartNumber(totalSize, page)).append("&end=").append(getEndNumber(totalSize, page));
+		bldr.append("/target-trak/");
+		bldr.append(paginationLink);
+		bldr.append("?page=").append(page).append("&start=").append(getStartNumber(totalSize, page)).append("&end=").append(getEndNumber(totalSize, page));
 		return bldr.toString();
 	}
 
