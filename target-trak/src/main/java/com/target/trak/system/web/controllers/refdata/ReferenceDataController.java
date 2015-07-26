@@ -34,17 +34,17 @@ import com.target.trak.system.web.handlers.ExceptionHandler;
 import com.target.trak.system.web.views.NameValuePair;
 import com.target.trak.system.web.views.PaginationBean;
 import com.target.trak.system.web.views.ReferenceDataItem;
-import com.target.trak.system.web.views.helper.ReferenceDataViewHelper;
+import com.target.trak.system.web.views.helper.ReferenceDataHelper;
 
 @SessionAttributes("searchReferenceDataForm")
 @Controller
 public class ReferenceDataController {
 
-	private static final int FIRST_PAGE = 1;
 	private static final String SEARCH_REFERENCE_DATA_SCREEN = "referencedata/searchReferenceData";
 	private static final String VIEW_REFERENCE_DATA_ITEM_SCREEN = "referencedata/viewReferenceDataItem";
 	private static final String EDIT_REFERENCE_DATA_ITEM_SCREEN = "referencedata/editReferenceDataItem";
 	private static final String CREATE_REFERENCE_DATA_ITEM_SCREEN = "referencedata/createReferenceDataItem";
+	private static final String PAGINATION_LINK = "getPagedReferenceData.htm";
 
 	private ReferenceDataService referenceDataService;
 
@@ -54,7 +54,7 @@ public class ReferenceDataController {
 
 	private ExceptionHandler targetTrakExceptionHandler;
 
-	private ReferenceDataViewHelper viewHelper;
+	private ReferenceDataHelper viewHelper;
 
 	@RequestMapping(value = "/searchReferenceData.htm", method = RequestMethod.GET)
 	public ModelAndView showSearchReferenceDataScreen() {
@@ -74,7 +74,7 @@ public class ReferenceDataController {
 		ReferenceDataApiResponse response = referenceDataService.getReferenceDataByCriteria(request);
 
 		List<ReferenceDataItem> referenceDataList = viewHelper.buildReferenceDataList(response.getReferenceDataList());
-		PaginationBean paginationBean = pagingBuilder.buildPaginationBean(FIRST_PAGE, response.getTotalSize());
+		PaginationBean paginationBean = pagingBuilder.buildPaginationBean(PaginationBuilder.FIRST_PAGE, response.getTotalSize(), PAGINATION_LINK);
 
 		model.addAttribute("referenceDataTypes", getReferenceDataTypesList());
 		model.addAttribute("statusList", getReferenceDataByTypeList("status"));
@@ -91,7 +91,7 @@ public class ReferenceDataController {
 		ReferenceDataApiResponse response = referenceDataService.getReferenceDataByCriteria(request);
 
 		List<ReferenceDataItem> referenceDataList = viewHelper.buildReferenceDataList(response.getReferenceDataList());
-		PaginationBean paginationBean = pagingBuilder.buildPaginationBean(FIRST_PAGE, response.getTotalSize());
+		PaginationBean paginationBean = pagingBuilder.buildPaginationBean(PaginationBuilder.FIRST_PAGE, response.getTotalSize(), PAGINATION_LINK);
 		model.addAttribute("referenceDataTypes", getReferenceDataTypesList());
 		model.addAttribute("statusList", getReferenceDataByTypeList("status"));
 		model.addAttribute("usersList", buildDistinctUsersList());
@@ -113,7 +113,7 @@ public class ReferenceDataController {
 		ModelAndView mav = new ModelAndView(SEARCH_REFERENCE_DATA_SCREEN, "searchReferenceDataForm", searchReferenceDataForm);
 		if (response.isSuccess()) {
 			List<ReferenceDataItem> referenceDataList = viewHelper.buildReferenceDataList(response.getReferenceDataList());
-			PaginationBean paginationBean = pagingBuilder.buildPaginationBean(page, response.getTotalSize());
+			PaginationBean paginationBean = pagingBuilder.buildPaginationBean(page, response.getTotalSize(), PAGINATION_LINK);
 			mav.addObject("referenceDataTypes", getReferenceDataTypesList());
 			mav.addObject("statusList", getReferenceDataByTypeList("status"));
 			mav.addObject("usersList", buildDistinctUsersList());
@@ -256,7 +256,7 @@ public class ReferenceDataController {
 		this.targetTrakExceptionHandler = targetTrakExceptionHandler;
 	}
 
-	public void setViewHelper(ReferenceDataViewHelper viewHelper) {
+	public void setViewHelper(ReferenceDataHelper viewHelper) {
 		this.viewHelper = viewHelper;
 	}
 }
