@@ -5,14 +5,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <tiles:insertDefinition name="bootstrap">
 	<tiles:putAttribute name="content">
-		<form:form method="POST" action="/target-trak/updateCompany.htm" modelAttribute="companyItem" id="editCompanyForm">	
+		<form:form method="POST" action="/target-trak/createCompany.htm" modelAttribute="companyItem" id="createCompanyForm">	
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>	
-			<form:hidden path="id"/>
-			<form:hidden path="version" />
 	        <div class="row">
             	<div class="col-lg-offset-0">
 	            	<div class="panel panel-default">
-	                	<div class="panel-heading panel-heading-custom">Edit Company Details</div>
+	                	<div class="panel-heading panel-heading-custom">Create Company</div>
 		                    <div class="panel-body">
 		                    	<c:if test="${not empty message}">
 			                    	<div class="row">
@@ -101,37 +99,12 @@
 			                                </div>
 			                            </spring:bind>
 		                            </div>
-		                            <div class="col-md-5 col-sm-offset-1">   
-	                                   	<div class="form-group">
-	                                    	<form:label path="createdBy" cssClass="control-label input-md">Created By</form:label>
-                                            <input name="createdBy" class="form-control input-sm" value="${companyItem.createdBy}" readonly/>
-	                                   	</div>
-                    				</div>
-                    				<div class="col-md-5 col-sm-offset-1">
-	                                   	<div class="form-group">
-	                                    	<form:label path="createdDate" cssClass="control-label input-md">Created Date</form:label>
-                                            <input name="createdDate" class="form-control input-sm" value="${companyItem.createdDate}" readonly/>
-	                                   	</div>
-                                   	</div>
-                                   	<div class="col-md-5 col-sm-offset-1">   
-	                                   	<div class="form-group">
-		                                    <form:label path="lastUpdatedDate" cssClass="control-label input-md">Last Updated Date:</form:label>
-		                                    <input name="lastUpdatedDate" class="form-control input-sm" value="${companyItem.lastUpdatedDate}" readonly/>
-		                                </div>
-                    				</div>
-                    				<div class="col-md-5 col-sm-offset-1">
-	                                   	<div class="form-group">
-		                                    <form:label path="lastUpdatedBy" cssClass="control-label input-md">Last Updated By:</form:label>
-		                                    <input name="lastUpdatedBy" class="form-control input-sm" value="${companyItem.lastUpdatedBy}" readonly/>
-		                                </div>
-                    				</div>
                    				<div class="row">
 		                        	<div class="form-group">
 									    <label class="col-lg-12 control-label" for="singlebutton"></label>
 									    <div class="col-lg-12">
 									        <div class="col-lg-12 text-center"> 
-												<button class="btn btn-primary" type="submit">Save</button> 
-												<button class="btn btn-primary" type="submit" onclick="javascript:cancelEditCompany();">Cancel</button> 
+												<button class="btn btn-primary" type="submit">Create</button> 
 											</div>
 									    </div>
 									</div>

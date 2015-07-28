@@ -92,7 +92,10 @@ public class CompanyHelperImpl implements CompanyHelper {
 		dto.setCountry(company.getCountry());
 		dto.setVersion(company.getVersion());
 		dto.setLastUpdatedBy(user.getUsername());
-		dto.setLastUpdatedDate(Calendar.getInstance());
+		Calendar calendar = Calendar.getInstance();
+		dto.setLastUpdatedDate(calendar);
+		dto.setCreatedBy(user.getUsername());
+		dto.setCreatedDate(calendar);
 		return dto;
 	}
 

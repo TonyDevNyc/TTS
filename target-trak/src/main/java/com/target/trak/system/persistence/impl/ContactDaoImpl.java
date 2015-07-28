@@ -92,6 +92,8 @@ public class ContactDaoImpl implements ContactDao {
 		params.addValue("lastUpdatedBy", contact.getLastUpdatedBy());
 		params.addValue("lastUpdatedTs", contact.getLastUpdatedTimestamp());
 		params.addValue("id", contact.getId());
+		params.addValue("version", contact.getVersion());
+		params.addValue("updatedVersion", contact.getVersion()+1);
 
 		String sql = contactQueries.getProperty("updateContactSql");
 		int count = contactTemplate.update(sql, params);
@@ -129,7 +131,8 @@ public class ContactDaoImpl implements ContactDao {
 			domain.setCreatedTimestamp(rs.getTimestamp("created_ts"));
 			domain.setLastUpdatedBy(rs.getString("last_updated_by"));
 			domain.setLastUpdatedTimestamp(rs.getTimestamp("last_updated_ts"));
-
+			domain.setVersion(rs.getInt("version"));
+			
 			Company company = new Company();
 			company.setId(rs.getLong("company_id"));
 			company.setName(rs.getString("company_name"));

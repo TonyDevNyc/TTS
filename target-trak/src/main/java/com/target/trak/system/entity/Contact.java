@@ -22,6 +22,7 @@ public class Contact implements Serializable {
 	private Timestamp createdTimestamp;
 	private String lastUpdatedBy;
 	private Timestamp lastUpdatedTimestamp;
+	private int version;
 
 	public Long getId() {
 		return id;
@@ -141,6 +142,14 @@ public class Contact implements Serializable {
 
 	public void setLastUpdatedTimestamp(Timestamp lastUpdatedTimestamp) {
 		this.lastUpdatedTimestamp = lastUpdatedTimestamp;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	@Override

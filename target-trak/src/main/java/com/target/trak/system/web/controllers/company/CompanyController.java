@@ -44,6 +44,7 @@ public class CompanyController {
 	private static final String SEARCH_COMPANY_SCREEN = "contactgroup/searchCompany";
 	private static final String VIEW_COMPANY_SCREEN = "contactgroup/viewCompany";
 	private static final String EDIT_COMPANY_SCREEN = "contactgroup/editCompany";
+	private static final String CREATE_COMPANY_SCREEN = "contactgroup/createCompany";
 	private static final String PAGINATION_LINK = "getPagedCompanies.htm";
 
 	private CompanyService companyService;
@@ -184,6 +185,37 @@ public class CompanyController {
 	public String cancelUpdateReferenceData(@ModelAttribute("companyItem") CompanyItem companyItem, RedirectAttributes attributes) {
 		attributes.addAttribute("id", companyItem.getId());
 		return "redirect:/viewCompany.htm";
+	}
+	
+	@RequestMapping(value = "/showCreateCompany.htm", method = RequestMethod.GET)
+	public ModelAndView showCreateCompanyScreen() {
+		ModelAndView mav = new ModelAndView(CREATE_COMPANY_SCREEN, "companyItem", new CompanyItem());
+		mav.addObject("statesList", viewHelper.getReferenceDataByType("states"));
+		mav.addObject("citiesList", viewHelper.getReferenceDataByType("cities"));
+		mav.addObject("countriesList", viewHelper.getReferenceDataByType("countries"));
+		return mav;
+	}
+	
+	@RequestMapping(value = "/createCompany.htm", method = RequestMethod.POST)
+	public String createCompany(@ModelAttribute("companyItem") CompanyItem companyItem, BindingResult result, ModelMap model, RedirectAttributes attributes, @AuthenticationPrincipal UsernamePasswordAuthenticationToken authentication) {
+		User user = (User) authentication.getPrincipal();
+		CompanyApiRequest request = new CompanyApiRequest();
+		request.setCompany(companyViewHelper.buildCompanyDto(companyItem, user));
+
+		CompanyApiResponse response = new CompanyApiResponse();
+		response = companyService.createCompany(request);
+		
+		if (response.isSuccess()) {
+			attributes.addAttribute("id", response.getCompany().getId());
+			return "redirect:/viewCompany.htm";
+		}
+		
+		targetTrakExceptionHandler.bindValidationErrors(response.getErrors(), result, "companyItem");
+		model.addAttribute("statesList", viewHelper.getReferenceDataByType("states"));
+		model.addAttribute("citiesList", viewHelper.getReferenceDataByType("cities"));
+		model.addAttribute("countriesList", viewHelper.getReferenceDataByType("countries"));
+		model.addAttribute("companyItem", companyItem);
+		return CREATE_COMPANY_SCREEN;
 	}
 	
 	private List<NameValuePair> buildDistinctUsersList() {

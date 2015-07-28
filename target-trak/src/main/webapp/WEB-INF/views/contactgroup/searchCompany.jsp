@@ -27,11 +27,12 @@
 					</span>
 				</div>
     		</div>
-    		<div class="col-sm-2">
+    		<!-- <div class="col-sm-2">
 		        <div> 
-					<button class="btn btn-sm btn-primary btn-block" type="submit">Add Company</button>
+					<button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#createCompanyModal">Create Company</button>
 				</div>
 		    </div>
+		     -->
   		</div>
    	</form:form>
     
@@ -60,6 +61,31 @@
 			</ul>
         </div>
      </c:if>
+     
+     <!-- Add Company Modal -->
+     <div id="createCompanyModal" class="modal fade" role="dialog">
+ 		<div class="modal-dialog">
+    		<div class="modal-content">
+	      		<div class="modal-header">
+		        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+		        	<h4 class="modal-title">Create Company</h4>
+		      	</div>
+		      	<div class="modal-body">
+		        	<form:form method="POST" action="/target-trak/createCompany.htm" modelAttribute="createCompanyForm" cssClass="form-horizontal" id="createCompanyForm">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>	
+						
+						<div class="form-group">
+	                    	<label for="exampleInputEmail1">Email address</label>
+	                      	<input type="email" class="form-control input-sm" id="exampleInputEmail1" placeholder="Enter email"/>
+	                  </div>
+					</form:form>
+		      	</div>
+		      	<div class="modal-footer">
+		       		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+    		</div>
+		</div>
+	</div>
      
 	</tiles:putAttribute>
 </tiles:insertDefinition>

@@ -49,8 +49,10 @@
 	     		email_address = :emailAddress,
 	     		active_at_company = :activeAtCompany,
 	     		last_updated_by = :lastUpdatedBy,
-	     		last_updated_ts = :lastUpdatedTs
+	     		last_updated_ts = :lastUpdatedTs,
+	     		version = :updatedVersion
 	     	WHERE id = :id
+	     	AND version = :version
        ]]>
 	</entry>
 </properties>
