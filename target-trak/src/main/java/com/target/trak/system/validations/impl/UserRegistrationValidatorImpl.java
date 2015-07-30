@@ -7,7 +7,6 @@ import java.util.List;
 import com.target.trak.system.service.dto.security.UserDto;
 import com.target.trak.system.service.dto.security.registration.RegistrationApiRequest;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 import com.target.trak.system.validations.rules.EmailRules;
 import com.target.trak.system.validations.rules.FirstNameRules;
@@ -31,16 +30,16 @@ public class UserRegistrationValidatorImpl implements TargetTrakValidator<Regist
 	private EmailRules emailRules;
 
 	@Override
-	public List<TargetTrakValidationError> validate(final RegistrationApiRequest request) throws TargetTrakValidationException {
+	public List<TargetTrakValidationError> validate(final RegistrationApiRequest request) {
 		List<TargetTrakValidationError> errors = new ArrayList<TargetTrakValidationError>();
 
 		if (request == null) {
-			throw new TargetTrakValidationException("API request is null");
+			throw new IllegalArgumentException("API request is null");
 		}
 
 		final UserDto userDto = request.getUserRegistration();
 		if (userDto == null) {
-			throw new TargetTrakValidationException("User DTO is null");
+			throw new IllegalArgumentException("User DTO is null");
 		}
 
 		errors.addAll(validateUsername(userDto.getUsername()));

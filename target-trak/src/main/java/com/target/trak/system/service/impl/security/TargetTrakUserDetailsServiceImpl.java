@@ -22,14 +22,14 @@ import com.target.trak.system.service.dto.security.user.UserApiResponse;
 
 public class TargetTrakUserDetailsServiceImpl implements UserDetailsService, UsersService {
 
-private Logger logger = Logger.getLogger(getClass());
-	
+	private Logger logger = Logger.getLogger(getClass());
+
 	private UserDetailsDao userDetailsDao;
 
 	private UserRoleDao userRoleDao;
 
 	private RolePrivilegesDao rolePrivilegesDao;
-	
+
 	private ConversionService conversionService;
 
 	@Override
@@ -39,7 +39,7 @@ private Logger logger = Logger.getLogger(getClass());
 			throw new UsernameNotFoundException("Username is empty");
 		}
 
-		User user = (User) userDetailsDao.getUserByUsername(username.toLowerCase());
+		User user = userDetailsDao.getUserByUsername(username.toLowerCase());
 		if (user == null) {
 			logger.error("Username: [" + username + "] not found");
 			throw new UsernameNotFoundException("Username: [" + username + "] not found");
@@ -48,25 +48,29 @@ private Logger logger = Logger.getLogger(getClass());
 		List<Role> roles = userRoleDao.getUserRoles(username.toLowerCase());
 		user.setAuthorities(roles);
 
-		for (Role role : roles) {
-			role.setPrivileges(rolePrivilegesDao.getPrivilegesByRoleId(role.getRoleId()));
+		if (roles != null && !roles.isEmpty()) {
+			for (Role role : roles) {
+				role.setPrivileges(rolePrivilegesDao.getPrivilegesByRoleId(role.getRoleId()));
+			}
 		}
 		return user;
 	}
-	
+
 	@Override
 	public UserApiResponse getDistinctUsers(final UserApiRequest request) {
 		UserApiResponse response = new UserApiResponse();
-		List<User> userEntities	= userDetailsDao.selectDistinctUsers();
+		List<User> userEntities = userDetailsDao.selectDistinctUsers();
 		response.setUsers(convertUserEntity(userEntities));
 		response.setSuccess(true);
 		return response;
 	}
-	
+
 	private List<UserDto> convertUserEntity(final List<User> entities) {
 		List<UserDto> dtos = new ArrayList<UserDto>();
-		for (User entity : entities) {
-			dtos.add(conversionService.convert(entity, UserDto.class));
+		if (entities != null && !entities.isEmpty()) {
+			for (User entity : entities) {
+				dtos.add(conversionService.convert(entity, UserDto.class));
+			}
 		}
 		return dtos;
 	}

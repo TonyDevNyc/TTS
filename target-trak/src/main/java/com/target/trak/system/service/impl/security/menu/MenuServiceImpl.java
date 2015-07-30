@@ -17,7 +17,6 @@ import com.target.trak.system.service.dto.security.UserDto;
 import com.target.trak.system.service.dto.security.menu.MenuApiRequest;
 import com.target.trak.system.service.dto.security.menu.MenuApiResponse;
 import com.target.trak.system.service.dto.security.menu.MenuDto;
-import com.target.trak.system.validations.TargetTrakValidationError;
 
 public class MenuServiceImpl extends BaseTargetTrakService implements MenuService {
 
@@ -25,11 +24,6 @@ public class MenuServiceImpl extends BaseTargetTrakService implements MenuServic
 
 	private ConversionService conversionService;
 	
-	@Override
-	public List<TargetTrakValidationError> validateRequest(final MenuApiRequest request) {
-		return null;
-	}
-
 	@Override
 	public MenuApiResponse getMenuItemsForUser(final MenuApiRequest request) {
 		MenuApiResponse response = new MenuApiResponse();

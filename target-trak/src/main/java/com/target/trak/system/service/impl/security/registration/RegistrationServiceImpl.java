@@ -1,5 +1,6 @@
 package com.target.trak.system.service.impl.security.registration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,7 +15,6 @@ import com.target.trak.system.service.dto.security.registration.RegistrationApiR
 import com.target.trak.system.service.dto.security.registration.RegistrationApiResponse;
 import com.target.trak.system.service.exception.TargetTrakException;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 
 public class RegistrationServiceImpl extends BaseTargetTrakService implements RegistrationService {
@@ -30,21 +30,22 @@ public class RegistrationServiceImpl extends BaseTargetTrakService implements Re
 	@Override
 	public RegistrationApiResponse registerUser(final RegistrationApiRequest request) {
 		RegistrationApiResponse response = new RegistrationApiResponse();
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
 
-		if (!validationErrors.isEmpty()) {
-			response.setSuccess(Boolean.FALSE);
-			response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
-			response.setErrors(validationErrors);
-			response.setMessage("A validation error has occurred. Please fix the errors below");
-			return response;
-		} 
-		
 		try {
+			List<TargetTrakValidationError> validationErrors = validateRequest(request);
+			
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			} 
+			
 			User user = conversionService.convert(request.getUserRegistration(), User.class);
 			userDetailsDao.insertUser(user);
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable t) {
+		} catch (RuntimeException t) {
 			logger.error(t.getMessage(), t);
 			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred processing your request. <br /> If the error still occurs, contact your administrator");
 			throw exception;
@@ -53,13 +54,9 @@ public class RegistrationServiceImpl extends BaseTargetTrakService implements Re
 	}
 
 	@Override
-	public List<TargetTrakValidationError> validateRequest(final RegistrationApiRequest request) {
-		List<TargetTrakValidationError> validationErrors = null;
-		try {
-			validationErrors = validator.validate(request);
-		} catch (TargetTrakValidationException e) {
-			logger.error("Validation Exception caught in RegistrationService", e);
-		}
+	public List<TargetTrakValidationError> validateRequest(final RegistrationApiRequest request)  {
+		List<TargetTrakValidationError> validationErrors = new ArrayList<TargetTrakValidationError>();
+		validationErrors.addAll(validator.validate(request));
 		return validationErrors;
 	}
 
@@ -74,5 +71,4 @@ public class RegistrationServiceImpl extends BaseTargetTrakService implements Re
 	public void setValidator(TargetTrakValidator<RegistrationApiRequest> validator) {
 		this.validator = validator;
 	}
-
 }
