@@ -10,7 +10,6 @@ import com.target.trak.system.service.dto.referencedata.ReferenceDataApiRequest;
 import com.target.trak.system.service.dto.referencedata.ReferenceDataDto;
 import com.target.trak.system.service.dto.referencedata.ReferenceDataSearchCriteriaDto;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 import com.target.trak.system.validations.rules.ReferenceDataRules;
 
@@ -23,16 +22,16 @@ public class ReferenceDataValidatorImpl implements TargetTrakValidator<Reference
 	}
 
 	@Override
-	public List<TargetTrakValidationError> validate(final ReferenceDataApiRequest request) throws TargetTrakValidationException {
+	public List<TargetTrakValidationError> validate(final ReferenceDataApiRequest request) {
 		List<TargetTrakValidationError> validationErrors = new ArrayList<TargetTrakValidationError>();
 
 		if (request == null) {
-			throw new TargetTrakValidationException("API request is null");
+			throw new IllegalArgumentException("API request is null");
 		}
 
 		final ReferenceDataDto referenceDataDto = request.getReferenceDataDto();
 		if (referenceDataDto == null) {
-			throw new TargetTrakValidationException("Reference Data is null");
+			throw new IllegalArgumentException("Reference Data is null");
 		}
 
 		switch (request.getRequestType()) {

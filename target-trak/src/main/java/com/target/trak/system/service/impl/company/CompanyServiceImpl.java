@@ -20,7 +20,6 @@ import com.target.trak.system.service.dto.company.CompanyApiResponse;
 import com.target.trak.system.service.dto.company.CompanyDto;
 import com.target.trak.system.service.exception.TargetTrakException;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 
 @Transactional(value = "dwTransactionManager", propagation = Propagation.NEVER)
@@ -37,7 +36,7 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 	public CompanyApiResponse createCompany(final CompanyApiRequest request) {
 		CompanyApiResponse response = new CompanyApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.CREATE);
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
+		List<TargetTrakValidationError> validationErrors = validator.validate(request);
 
 		if (!validationErrors.isEmpty()) {
 			response.setSuccess(Boolean.FALSE);
@@ -89,7 +88,7 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 	public CompanyApiResponse updateCompany(final CompanyApiRequest request) {
 		CompanyApiResponse response = new CompanyApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.UPDATE);
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
+		List<TargetTrakValidationError> validationErrors = validator.validate(request);
 
 		if (!validationErrors.isEmpty()) {
 			response.setSuccess(Boolean.FALSE);
@@ -145,16 +144,7 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 		return response;
 	}
 
-	private List<TargetTrakValidationError> validateRequest(final CompanyApiRequest request) {
-		List<TargetTrakValidationError> errors = new ArrayList<TargetTrakValidationError>();
-		try {
-			errors = validator.validate(request);
-		} catch (TargetTrakValidationException e) {
-			logger.error("Validation Error caught", e);
-		}
-		return errors;
-	}
-
+	
 	private List<CompanyDto> convertEntityList(final List<Company> companies) {
 		List<CompanyDto> dtos = new ArrayList<CompanyDto>();
 		if (companies == null || companies.isEmpty()) {

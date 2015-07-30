@@ -20,7 +20,6 @@ import com.target.trak.system.service.dto.referencedata.ReferenceDataApiResponse
 import com.target.trak.system.service.dto.referencedata.ReferenceDataDto;
 import com.target.trak.system.service.exception.TargetTrakException;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 
 @Transactional(value = "dwTransactionManager", propagation = Propagation.NEVER)
@@ -39,21 +38,23 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 	public ReferenceDataApiResponse createReferenceData(final ReferenceDataApiRequest request) {
 		ReferenceDataApiResponse response = new ReferenceDataApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.CREATE);
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
-
-		if (!validationErrors.isEmpty()) {
-			response.setSuccess(Boolean.FALSE);
-			response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
-			response.setErrors(validationErrors);
-			response.setMessage("A validation error has occurred. Please fix the errors below");
-			return response;
-		}
-
+		List<TargetTrakValidationError> validationErrors = null;
+		
 		try {
+			validationErrors = validator.validate(request);
+
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			}
+			
 			ReferenceData domain = referenceDataDao.insertReferenceData(conversionService.convert(request.getReferenceDataDto(), ReferenceData.class));
 			response.setReferenceData(conversionService.convert(domain, ReferenceDataDto.class));
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			TargetTrakException exception = generateServiceException(response, validationErrors, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to create Reference Data. <br /> If the error still occurs, contact your administrator");
 			throw exception;
@@ -66,14 +67,18 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 	public ReferenceDataApiResponse deleteReferenceData(final ReferenceDataApiRequest request) {
 		ReferenceDataApiResponse response = new ReferenceDataApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.DELETE);
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
-
-		if (!validationErrors.isEmpty()) {
-			TargetTrakException exception = generateServiceException(response, validationErrors, TargetTrakErrorTypeEnum.VALIDATION, "A validation error has occurred. Please fix the errors below");
-			throw exception;
-		}
-
+		List<TargetTrakValidationError> validationErrors = null;
+		
 		try {
+			validationErrors = validator.validate(request);
+
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			}
 			ReferenceDataDto requestDto = request.getReferenceDataDto();
 			referenceDataDao.deleteReferenceData(conversionService.convert(requestDto, ReferenceData.class));
 			response.setSuccess(Boolean.TRUE);
@@ -117,7 +122,7 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 			}
 			response.setTotalSize(totalSize);
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search Reference Data. <br /> If the error still occurs, contact your administrator");
 			throw exception;
@@ -132,7 +137,7 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 			ReferenceData entity = referenceDataDao.selectReferenceDataById(request.getReferenceDataDto().getId());
 			response.setReferenceData(conversionService.convert(entity, ReferenceDataDto.class));
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search Reference Data. <br /> If the error still occurs, contact your administrator");
 			throw exception;
@@ -148,7 +153,7 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 			List<ReferenceDataDto> dtos = convertListOfDomains(data);
 			response.setReferenceDataList(dtos);
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable t) {
+		} catch (Exception t) {
 			logger.error(t.getMessage(), t);
 			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to process your request. <br /> If the error still occurs, contact your administrator");
 			throw exception;
@@ -161,17 +166,18 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 	public ReferenceDataApiResponse updateReferenceDataItem(final ReferenceDataApiRequest request) {
 		ReferenceDataApiResponse response = new ReferenceDataApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.UPDATE);
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
-
-		if (!validationErrors.isEmpty()) {
-			response.setSuccess(Boolean.FALSE);
-			response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
-			response.setErrors(validationErrors);
-			response.setMessage("A validation error has occurred. Please fix the errors below");
-			return response;
-		}
-
+		List<TargetTrakValidationError> validationErrors = null;
+		
 		try {
+			validationErrors = validator.validate(request);
+
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			}
 			ReferenceData convertedDomain = conversionService.convert(request.getReferenceDataDto(), ReferenceData.class);
 			ReferenceData domain = referenceDataDao.updateReferenceData(convertedDomain);
 			ReferenceDataDto dto = conversionService.convert(domain, ReferenceDataDto.class);
@@ -184,16 +190,6 @@ public class ReferenceDataServiceImpl extends BaseTargetTrakService implements R
 			response.setMessage("An error has occurred trying to update Reference Data. <br /> If the error still occurs, contact your administrator");
 		}
 		return response;
-	}
-
-	private List<TargetTrakValidationError> validateRequest(final ReferenceDataApiRequest request) {
-		List<TargetTrakValidationError> errors = new ArrayList<TargetTrakValidationError>();
-		try {
-			errors = validator.validate(request);
-		} catch (TargetTrakValidationException e) {
-			logger.error("Validation Error caught", e);
-		}
-		return errors;
 	}
 
 	private List<ReferenceDataDto> convertListOfDomains(final List<ReferenceData> domains) {

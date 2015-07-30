@@ -19,7 +19,6 @@ import com.target.trak.system.service.dto.contact.ContactApiRequest;
 import com.target.trak.system.service.dto.contact.ContactApiResponse;
 import com.target.trak.system.service.dto.contact.ContactDto;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 
 @Transactional(value = "dwTransactionManager", propagation = Propagation.NEVER)
@@ -129,13 +128,8 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 	}
 	
 	private List<TargetTrakValidationError> validateRequest(final ContactApiRequest request) {
-		List<TargetTrakValidationError> errors = new ArrayList<TargetTrakValidationError>();
-		try {
-			errors = validator.validate(request);
-		} catch (TargetTrakValidationException e) {
-			logger.error("Validation Error caught", e);
-		}
-		return errors;
+		return validator.validate(request);
+		
 	}
 
 	public ContactDao getContactDao() {

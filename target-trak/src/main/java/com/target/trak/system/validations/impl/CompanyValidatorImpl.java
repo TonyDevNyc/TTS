@@ -7,7 +7,6 @@ import java.util.List;
 import com.target.trak.system.service.dto.company.CompanyApiRequest;
 import com.target.trak.system.service.dto.company.CompanyDto;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 import com.target.trak.system.validations.rules.AddressRules;
 import com.target.trak.system.validations.rules.CompanyRules;
@@ -19,11 +18,11 @@ public class CompanyValidatorImpl implements TargetTrakValidator<CompanyApiReque
 	private AddressRules addressRules;
 
 	@Override
-	public List<TargetTrakValidationError> validate(final CompanyApiRequest request) throws TargetTrakValidationException {
+	public List<TargetTrakValidationError> validate(final CompanyApiRequest request) {
 		List<TargetTrakValidationError> validationErrors = new ArrayList<TargetTrakValidationError>();
 
 		if (request == null) {
-			throw new TargetTrakValidationException("API request is null");
+			throw new IllegalArgumentException("API request is null");
 		}
 
 		final CompanyDto companyDto = request.getCompany();

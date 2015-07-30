@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.target.trak.system.service.dto.contact.ContactApiRequest;
 import com.target.trak.system.service.dto.contact.ContactDto;
 import com.target.trak.system.validations.TargetTrakValidationError;
-import com.target.trak.system.validations.TargetTrakValidationException;
 import com.target.trak.system.validations.TargetTrakValidator;
 import com.target.trak.system.validations.rules.ContactRules;
 import com.target.trak.system.validations.rules.EmailRules;
@@ -30,11 +29,11 @@ public class ContactValidatorImpl implements TargetTrakValidator<ContactApiReque
 	private ContactRules contactRules;
 
 	@Override
-	public List<TargetTrakValidationError> validate(final ContactApiRequest request) throws TargetTrakValidationException {
+	public List<TargetTrakValidationError> validate(final ContactApiRequest request) {
 		List<TargetTrakValidationError> validationErrors = new ArrayList<TargetTrakValidationError>();
 
 		if (request == null) {
-			throw new TargetTrakValidationException("API request is null");
+			throw new IllegalArgumentException("API request is null");
 		}
 
 		final ContactDto contactDto = request.getContact();
