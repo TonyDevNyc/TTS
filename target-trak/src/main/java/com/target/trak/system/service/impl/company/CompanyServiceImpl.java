@@ -36,23 +36,25 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 	public CompanyApiResponse createCompany(final CompanyApiRequest request) {
 		CompanyApiResponse response = new CompanyApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.CREATE);
-		List<TargetTrakValidationError> validationErrors = validator.validate(request);
-
-		if (!validationErrors.isEmpty()) {
-			response.setSuccess(Boolean.FALSE);
-			response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
-			response.setErrors(validationErrors);
-			response.setMessage("A validation error has occurred. Please fix the errors below");
-			return response;
-		}
+		List<TargetTrakValidationError> validationErrors = null;
 
 		try {
+			validationErrors = validator.validate(request);
+
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			}
+
 			Company entity = companyDao.insertCompany(conversionService.convert(request.getCompany(), Company.class));
 			response.setCompany(conversionService.convert(entity, CompanyDto.class));
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			TargetTrakException exception = generateServiceException(response, validationErrors, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to create Reference Data. <br /> If the error still occurs, contact your administrator");
+			TargetTrakException exception = generateServiceException(response, validationErrors, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to create a company. <br /> If the error still occurs, contact your administrator");
 			throw exception;
 		}
 		return response;
@@ -75,9 +77,9 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 			}
 			response.setTotalSize(totalSize);
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search Reference Data. <br /> If the error still occurs, contact your administrator");
+			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search Companies. <br /> If the error still occurs, contact your administrator");
 			throw exception;
 		}
 		return response;
@@ -123,7 +125,7 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 			response.setSuccess(Boolean.TRUE);
 		} catch (Throwable e) {
 			logger.error(e.getMessage(), e);
-			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search Reference Data. <br /> If the error still occurs, contact your administrator");
+			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search companies. <br /> If the error still occurs, contact your administrator");
 			throw exception;
 		}
 		return response;
@@ -138,13 +140,12 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 			response.setSuccess(Boolean.TRUE);
 		} catch (Throwable e) {
 			logger.error(e.getMessage(), e);
-			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search Reference Data. <br /> If the error still occurs, contact your administrator");
+			TargetTrakException exception = generateServiceException(response, null, TargetTrakErrorTypeEnum.ERROR, "An error has occurred trying to search companies. <br /> If the error still occurs, contact your administrator");
 			throw exception;
 		}
 		return response;
 	}
 
-	
 	private List<CompanyDto> convertEntityList(final List<Company> companies) {
 		List<CompanyDto> dtos = new ArrayList<CompanyDto>();
 		if (companies == null || companies.isEmpty()) {
