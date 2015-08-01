@@ -25,7 +25,7 @@ import com.target.trak.system.validations.TargetTrakValidator;
 public class ContactServiceImpl extends BaseTargetTrakService implements ContactService {
 
 	private static Logger logger = Logger.getLogger(ContactServiceImpl.class);
-	
+
 	private ContactDao contactDao;
 	private ConversionService conversionService;
 	private TargetTrakValidator<ContactApiRequest> validator;
@@ -35,21 +35,23 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 	public ContactApiResponse createContact(final ContactApiRequest request) {
 		ContactApiResponse response = new ContactApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.CREATE);
-		List<TargetTrakValidationError> validationErrors = validateRequest(request);
-
-		if (!validationErrors.isEmpty()) {
-			response.setSuccess(Boolean.FALSE);
-			response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
-			response.setErrors(validationErrors);
-			response.setMessage("A validation error has occurred. Please fix the errors below");
-			return response;
-		}
-		
+		List<TargetTrakValidationError> validationErrors = null;
 		try {
+
+			validationErrors = validator.validate(request);
+
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			}
+
 			Contact entity = contactDao.insertContact(conversionService.convert(request.getContact(), Contact.class));
 			response.setContact(conversionService.convert(entity, ContactDto.class));
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			response.setSuccess(Boolean.FALSE);
 			response.setErrorType(TargetTrakErrorTypeEnum.ERROR);
@@ -62,7 +64,7 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 	public ContactApiResponse getContactsByCriteria(final ContactApiRequest request) {
 		ContactApiResponse response = new ContactApiResponse();
 		ContactSearchCriteria criteria = conversionService.convert(request.getSearchCriteria(), ContactSearchCriteria.class);
-		
+
 		try {
 			int totalSize = contactDao.selectContactsByCriteriaCount(criteria);
 			List<ContactDto> dtos = null;
@@ -73,7 +75,7 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 			dtos = convertEntitiesToDtoList(contacts);
 			response.setContacts(dtos);
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			response.setSuccess(Boolean.FALSE);
 			response.setErrorType(TargetTrakErrorTypeEnum.ERROR);
@@ -89,7 +91,7 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 			Contact entity = contactDao.selectContactById(request.getContact().getId());
 			response.setContact(conversionService.convert(entity, ContactDto.class));
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			response.setSuccess(Boolean.FALSE);
 			response.setErrorType(TargetTrakErrorTypeEnum.ERROR);
@@ -103,53 +105,48 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 	public ContactApiResponse updateContact(final ContactApiRequest request) {
 		ContactApiResponse response = new ContactApiResponse();
 		request.setRequestType(TargetTrakRequestTypeEnum.UPDATE);
-		
+		List<TargetTrakValidationError> validationErrors = null;
+
 		try {
+			validationErrors = validator.validate(request);
+			if (!validationErrors.isEmpty()) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorType(TargetTrakErrorTypeEnum.VALIDATION);
+				response.setErrors(validationErrors);
+				response.setMessage("A validation error has occurred. Please fix the errors below");
+				return response;
+			}
+
 			Contact entity = contactDao.updateContact(conversionService.convert(request.getContact(), Contact.class));
 			response.setContact(conversionService.convert(entity, ContactDto.class));
 			response.setSuccess(Boolean.TRUE);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			response.setSuccess(Boolean.FALSE);
 			response.setErrorType(TargetTrakErrorTypeEnum.ERROR);
 			response.setMessage("An error has occurred trying to update a contact by id. <br /> If the error still occurs, contact your administrator");
-		} 
+		}
 		return response;
 	}
-	
+
 	private List<ContactDto> convertEntitiesToDtoList(final List<Contact> contacts) {
 		List<ContactDto> dtos = new ArrayList<ContactDto>();
-		if (contacts != null && !contacts.isEmpty()) {
-			for (Contact contact : contacts) {
-				dtos.add(conversionService.convert(contact, ContactDto.class));
-			}
+		if (contacts == null || contacts.isEmpty()) {
+			return dtos;
+		}
+		
+		for (Contact contact : contacts) {
+			dtos.add(conversionService.convert(contact, ContactDto.class));
 		}
 		return dtos;
 	}
-	
-	private List<TargetTrakValidationError> validateRequest(final ContactApiRequest request) {
-		return validator.validate(request);
-		
-	}
 
-	public ContactDao getContactDao() {
-		return contactDao;
-	}
-
-	public void setContactDo(ContactDao contactDao) {
+	public void setContactDao(ContactDao contactDao) {
 		this.contactDao = contactDao;
-	}
-
-	public ConversionService getConversionService() {
-		return conversionService;
 	}
 
 	public void setConversionService(ConversionService conversionService) {
 		this.conversionService = conversionService;
-	}
-
-	public TargetTrakValidator<ContactApiRequest> getValidator() {
-		return validator;
 	}
 
 	public void setValidator(TargetTrakValidator<ContactApiRequest> validator) {

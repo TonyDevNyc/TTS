@@ -61,12 +61,12 @@ public class CompanyServiceImplTest {
 	}
 
 	@Test(expected = TargetTrakException.class)
-	public void createReferenceDataForNullReferenceDataDto() {
+	public void createCompanyForNullCompanyDto() {
 		final CompanyApiRequest request = new CompanyApiRequest();
 		mockery.checking(new org.jmock.Expectations() {
 			{
 				oneOf(validatorMock).validate(with(request));
-				will(throwException(new IllegalArgumentException("Reference Data is null")));
+				will(throwException(new IllegalArgumentException("Company is null")));
 			}
 		});
 		companyService.createCompany(request);
@@ -186,12 +186,12 @@ public class CompanyServiceImplTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void updateReferenceDataForNullReferenceDataDto() {
+	public void updateCompanyForNullCompanyDto() {
 		final CompanyApiRequest request = new CompanyApiRequest();
 		mockery.checking(new org.jmock.Expectations() {
 			{
 				oneOf(validatorMock).validate(with(request));
-				will(throwException(new IllegalArgumentException("Reference Data is null")));
+				will(throwException(new IllegalArgumentException("Company Data is null")));
 			}
 		});
 		companyService.updateCompany(request);
