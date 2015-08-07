@@ -1,12 +1,9 @@
-package com.target.trak.system.service.dto.contact;
+package com.target.trak.system.web.views;
 
-import java.util.Calendar;
+public class ContactItem {
 
-import com.target.trak.system.service.dto.company.CompanyDto;
-
-public class ContactDto {
-
-	private Long id;
+	private long id;
+	private String displayName;
 	private String contactType;
 	private String title;
 	private String firstName;
@@ -14,21 +11,31 @@ public class ContactDto {
 	private String middleInitial;
 	private String suffix;
 	private String telephoneNumber;
-	private String emailAddress;
-	private CompanyDto company;
-	private boolean activeAtCompany;
+	private String email;
+	private String companyName;
+	private Long company;
+	private String activeAtCompany;
 	private String createdBy;
-	private Calendar createdDate;
+	private String createdDate;
 	private String lastUpdatedBy;
-	private Calendar lastUpdatedDate;
+	private String lastUpdatedDate;
 	private int version;
+	private String url;
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getContactType() {
@@ -87,27 +94,43 @@ public class ContactDto {
 		this.telephoneNumber = telephoneNumber;
 	}
 
-	public String getEmailAddress() {
-		return emailAddress;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setEmail(String emailAddress) {
+		this.email = emailAddress;
 	}
 
-	public CompanyDto getCompany() {
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public Long getCompany() {
 		return company;
 	}
 
-	public void setCompany(CompanyDto company) {
-		this.company = company;
+	public void setCompany(Long companyId) {
+		this.company = companyId;
 	}
 
-	public boolean isActiveAtCompany() {
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getActiveAtCompany() {
 		return activeAtCompany;
 	}
 
-	public void setActiveAtCompany(boolean activeAtCompany) {
+	public void setActiveAtCompany(String activeAtCompany) {
 		this.activeAtCompany = activeAtCompany;
 	}
 
@@ -119,11 +142,11 @@ public class ContactDto {
 		this.createdBy = createdBy;
 	}
 
-	public Calendar getCreatedDate() {
+	public String getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Calendar createdDate) {
+	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -135,11 +158,11 @@ public class ContactDto {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public Calendar getLastUpdatedDate() {
+	public String getLastUpdatedDate() {
 		return lastUpdatedDate;
 	}
 
-	public void setLastUpdatedDate(Calendar lastUpdatedDate) {
+	public void setLastUpdatedDate(String lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 

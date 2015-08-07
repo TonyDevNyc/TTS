@@ -77,7 +77,8 @@ public class ContactDaoImpl implements ContactDao {
 	public List<Contact> selectContactsByCriteria(final ContactSearchCriteria criteria) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		String sql = contactQueryBuilder.buildPaginatedContactQueryByCriteria(criteria, params);
-		return contactTemplate.query(sql, params, new ContactRowMapper());
+		final List<Contact> contacts = contactTemplate.query(sql, params, new ContactRowMapper());
+		return contacts;
 	}
 
 	@Override

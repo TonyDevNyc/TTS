@@ -99,7 +99,7 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(value = "/getPagedCompanies.htm", method = RequestMethod.GET)
-	public ModelAndView getPagedReferenceData(HttpSession session, @RequestParam int page, @RequestParam int start) {
+	public ModelAndView getPagedCompanies(HttpSession session, @RequestParam int page, @RequestParam int start) {
 		SearchCompanyForm searchCompanyForm = (SearchCompanyForm) session.getAttribute("searchCompanyForm");
 		searchCompanyForm.setPage(page);
 		searchCompanyForm.setStart(start);
@@ -211,6 +211,7 @@ public class CompanyController {
 		}
 		
 		targetTrakExceptionHandler.bindValidationErrors(response.getErrors(), result, "companyItem");
+		model.addAttribute("errorMessage", response.getMessage());
 		model.addAttribute("statesList", viewHelper.getReferenceDataByType("states"));
 		model.addAttribute("citiesList", viewHelper.getReferenceDataByType("cities"));
 		model.addAttribute("countriesList", viewHelper.getReferenceDataByType("countries"));

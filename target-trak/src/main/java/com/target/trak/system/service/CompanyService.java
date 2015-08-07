@@ -11,7 +11,7 @@ public interface CompanyService {
 	
 	public CompanyApiResponse updateCompany(final CompanyApiRequest request);
 	
-	public CompanyApiResponse getCompanyNames(final CompanyApiRequest request);
+	public CompanyApiResponse getCompanyNames();
 	
 	public CompanyApiResponse getCompanyById(final CompanyApiRequest request);
 }

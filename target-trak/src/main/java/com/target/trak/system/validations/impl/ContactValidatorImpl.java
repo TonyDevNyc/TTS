@@ -44,6 +44,7 @@ public class ContactValidatorImpl implements TargetTrakValidator<ContactApiReque
 				break;
 			case UPDATE:
 				validationErrors.addAll(validateUpdate(contactDto));
+				break;
 			default:
 				System.out.println("No implementation available");
 				break;
@@ -54,30 +55,30 @@ public class ContactValidatorImpl implements TargetTrakValidator<ContactApiReque
 	
 	private List<TargetTrakValidationError> validateCreate(final ContactDto contactDto) {
 		List<TargetTrakValidationError> errors = new ArrayList<TargetTrakValidationError>();
-		validateContactType(contactDto.getContactType());
-		validateTitle(contactDto.getTitle());
-		validateFirstName(contactDto.getFirstName());
-		validateLastName(contactDto.getLastName());
-		validateMiddleInitial(contactDto.getMiddleInitial());
-		validateSuffix(contactDto.getSuffix());
-		validateTelephoneNumber(contactDto.getTelephoneNumber());
-		validateEmail(contactDto.getEmailAddress());
-		validateCompany(contactDto.getCompany().getId());
+		errors.addAll(validateContactType(contactDto.getContactType()));
+		errors.addAll(validateTitle(contactDto.getTitle()));
+		errors.addAll(validateFirstName(contactDto.getFirstName()));
+		errors.addAll(validateLastName(contactDto.getLastName()));
+		errors.addAll(validateMiddleInitial(contactDto.getMiddleInitial()));
+		errors.addAll(validateSuffix(contactDto.getSuffix()));
+		errors.addAll(validateTelephoneNumber(contactDto.getTelephoneNumber()));
+		errors.addAll(validateEmail(contactDto.getEmailAddress()));
+		errors.addAll(validateCompany(contactDto.getCompany().getId()));
 		return errors;
 	}
 	
 	private List<TargetTrakValidationError> validateUpdate(final ContactDto contactDto) {
 		List<TargetTrakValidationError> errors = new ArrayList<TargetTrakValidationError>();
-		validateId(contactDto.getId());
-		validateContactType(contactDto.getContactType());
-		validateTitle(contactDto.getTitle());
-		validateFirstName(contactDto.getFirstName());
-		validateLastName(contactDto.getLastName());
-		validateMiddleInitial(contactDto.getMiddleInitial());
-		validateSuffix(contactDto.getSuffix());
-		validateTelephoneNumber(contactDto.getTelephoneNumber());
-		validateEmail(contactDto.getEmailAddress());
-		validateCompany(contactDto.getCompany().getId());
+		errors.addAll(validateId(contactDto.getId()));
+		errors.addAll(validateContactType(contactDto.getContactType()));
+		errors.addAll(validateTitle(contactDto.getTitle()));
+		errors.addAll(validateFirstName(contactDto.getFirstName()));
+		errors.addAll(validateLastName(contactDto.getLastName()));
+		errors.addAll(validateMiddleInitial(contactDto.getMiddleInitial()));
+		errors.addAll(validateSuffix(contactDto.getSuffix()));
+		errors.addAll(validateTelephoneNumber(contactDto.getTelephoneNumber()));
+		errors.addAll(validateEmail(contactDto.getEmailAddress()));
+		errors.addAll(validateCompany(contactDto.getCompany().getId()));
 		return errors;
 	}
 

@@ -1,6 +1,6 @@
 package com.target.trak.system.entity.criteria;
 
-public class ContactSearchCriteria extends BaseSearchCriteria {
+public class TextSearchCriteria extends BaseSearchCriteria {
 
 	private String text;
 
@@ -11,6 +11,5 @@ public class ContactSearchCriteria extends BaseSearchCriteria {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
 	
 }

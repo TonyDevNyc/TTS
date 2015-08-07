@@ -37,7 +37,7 @@ public final class ValidationsUtil {
 		}
 		return builder.toString();
 	}
-	
+
 	public static String getNonNumericCharacters(final String value) {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < value.length(); i++) {
@@ -48,12 +48,12 @@ public final class ValidationsUtil {
 		}
 		return builder.toString();
 	}
-	
+
 	public static boolean specialCharactersAreWhitespacesOnly(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return true;
 		}
-		
+
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
 			if (!Character.isWhitespace(c)) {

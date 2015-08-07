@@ -10,10 +10,17 @@ import com.target.trak.system.entity.criteria.ContactSearchCriteria;
 
 public class ContactQueryBuilder {
 
-	private static final String FIRST_NAME_COLUMN = "first_name";
-	private static final String LAST_NAME_COLUMN = "last_name";
-	private static final String COMPANY_COLUMN = "company_id";
-	private static final String CONTACT_TYPE_COLUMN = "contact_type";
+	private static final String TITLE_COLUMN = "ct.title";
+	private static final String FIRST_NAME_COLUMN = "ct.first_name";
+	private static final String LAST_NAME_COLUMN = "ct.last_name";
+	private static final String SUFFIX_COLUMN = "ct.suffix";
+	private static final String CONTACT_TYPE_COLUMN = "ct.contact_type";
+	private static final String COMPANY_NAME_COLUMN = "com.name";
+	private static final String CITY_COLUMN = "com.city";
+	private static final String STATE_COLUMN = "com.state";
+	private static final String CREATED_BY_COLUMN = "ct.created_by";
+	private static final String LAST_UPDATED_BY_COLUMN = "ct.last_updated_by";
+	
 	private static final String DEFAULT_SORT_ORDER = " ORDER BY last_name ASC ";
 
 	private Logger logger = Logger.getLogger(getClass());
@@ -30,25 +37,64 @@ public class ContactQueryBuilder {
 	
 	private String buildCriteriaQuery(final ContactSearchCriteria criteria, final MapSqlParameterSource params) {
 		StringBuilder builder = new StringBuilder();
-		if (!StringUtils.isEmpty(criteria.getFirstName())) {
-			builder.append(QueryConstantsEnum.AND.value).append(FIRST_NAME_COLUMN).append(QueryConstantsEnum.EQUALS).append(":firstName");
-			params.addValue("firstName", criteria.getFirstName());
+		
+		
+		if (!StringUtils.isEmpty(criteria.getText())) {
+			builder.append(QueryConstantsEnum.AND.value);
+			builder.append(QueryConstantsEnum.OPEN_PARENTHESIS.value);
+			
+			// title 
+			builder.append(TITLE_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":title");
+			params.addValue("title", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// firstName 
+			builder.append(FIRST_NAME_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":firstName");
+			params.addValue("firstName", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+
+			// lastName 
+			builder.append(LAST_NAME_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":lastName");
+			params.addValue("lastName", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+
+			// suffix 
+			builder.append(SUFFIX_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":suffix");
+			params.addValue("suffix", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// contactType 
+			builder.append(CONTACT_TYPE_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":contactType");
+			params.addValue("contactType", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// companyName
+			builder.append(COMPANY_NAME_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":companyName");
+			params.addValue("companyName", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+
+			// city
+			builder.append(CITY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":city");
+			params.addValue("city", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+
+			// state
+			builder.append(STATE_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":state");
+			params.addValue("state", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+
+			// createdBy
+			builder.append(CREATED_BY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":createdBy");
+			params.addValue("createdBy", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			builder.append(QueryConstantsEnum.OR.value);
+			
+			// lastUpdatedBy
+			builder.append(LAST_UPDATED_BY_COLUMN).append(QueryConstantsEnum.LIKE.value).append(":lastUpdatedBy");
+			params.addValue("lastUpdatedBy", QueryConstantsEnum.buildWildcardParameter(criteria.getText()));
+			
+			builder.append(QueryConstantsEnum.CLOSE_PARENTHESIS.value);
 		}
 
-		if (!StringUtils.isEmpty(criteria.getLastName())) {
-			builder.append(QueryConstantsEnum.AND.value).append(LAST_NAME_COLUMN).append(QueryConstantsEnum.EQUALS).append(":lastName");
-			params.addValue("lastName", criteria.getLastName());
-		}
-
-		if (criteria.getCompanyId() != null && criteria.getCompanyId() != 0L) {
-			builder.append(QueryConstantsEnum.AND.value).append(COMPANY_COLUMN).append(QueryConstantsEnum.EQUALS).append(":companyId");
-			params.addValue("companyId", criteria.getCompanyId());
-		}
-
-		if (!StringUtils.isEmpty(criteria.getContactType())) {
-			builder.append(QueryConstantsEnum.AND.value).append(CONTACT_TYPE_COLUMN).append(QueryConstantsEnum.EQUALS).append(":contactType");
-			params.addValue("contactType", criteria.getContactType());
-		}
 		logger.info("Query built: " + builder.toString());
 		return builder.toString();
 	}

@@ -116,7 +116,7 @@ public class CompanyServiceImpl extends BaseTargetTrakService implements Company
 	}
 
 	@Override
-	public CompanyApiResponse getCompanyNames(final CompanyApiRequest request) {
+	public CompanyApiResponse getCompanyNames() {
 		CompanyApiResponse response = new CompanyApiResponse();
 		try {
 			List<Company> data = companyDao.selectAllCompanyNames();

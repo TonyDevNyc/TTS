@@ -39,16 +39,16 @@ public class ContactRulesImpl implements ContactRules {
 
 	@Override
 	public TargetTrakValidationError contactTypeContainsAllowableChars(final String contactType) {
-		String allowableChars = validationProps.getProperty("contact.type.allowable.chars");
-
-		if (!StringUtils.isAlpha(contactType)) {
-			String nonAlphaChars = ValidationsUtil.getNonAlphaCharacters(contactType);
-			char[] allowableSpecialChars = allowableChars.toCharArray();
-
-			if (!ValidationsUtil.containsAllowableSpecialChars(nonAlphaChars, allowableSpecialChars)) {
-				return new TargetTrakValidationError("contactType", validationProps.getProperty("contact.type.allowable.chars.error"));
-			}
-		}
+//		String allowableChars = validationProps.getProperty("contact.type.allowable.chars");
+//
+//		if (!StringUtils.isAlpha(contactType)) {
+//			String nonAlphaChars = ValidationsUtil.getNonAlphaCharacters(contactType);
+//			char[] allowableSpecialChars = allowableChars.toCharArray();
+//
+//			if (!ValidationsUtil.containsAllowableSpecialChars(nonAlphaChars, allowableSpecialChars)) {
+//				return new TargetTrakValidationError("contactType", validationProps.getProperty("contact.type.allowable.chars.error"));
+//			}
+//		}
 		return null;
 	}
 
@@ -79,7 +79,7 @@ public class ContactRulesImpl implements ContactRules {
 	public TargetTrakValidationError isMiddleInitialValidLength(final String middleInitial) {
 		int maxlength = Integer.parseInt(validationProps.getProperty("contact.middleInitial.maxlength"));
 		if (middleInitial.length() > maxlength) {
-			return new TargetTrakValidationError(middleInitial, validationProps.getProperty("contact.middleInitial.maxlength.error"));
+			return new TargetTrakValidationError("middleInitial", validationProps.getProperty("contact.middleInitial.maxlength.error"));
 		}
 		return null;
 	}
@@ -87,7 +87,7 @@ public class ContactRulesImpl implements ContactRules {
 	@Override
 	public TargetTrakValidationError middleInitialContainsAllowableChar(final String middleInitial) {
 		if (!StringUtils.isAlpha(middleInitial)) {
-			return new TargetTrakValidationError(middleInitial, validationProps.getProperty("contact.middleInitial.allowable.chars.error"));
+			return new TargetTrakValidationError("middleInitial", validationProps.getProperty("contact.middleInitial.allowable.chars.error"));
 		}
 		return null;
 	}

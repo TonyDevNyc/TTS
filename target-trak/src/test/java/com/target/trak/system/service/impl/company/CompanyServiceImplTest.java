@@ -265,7 +265,7 @@ public class CompanyServiceImplTest {
 				will(throwException(new BadSqlGrammarException("select", "select..", new SQLException())));
 			}
 		});
-		companyService.getCompanyNames(new CompanyApiRequest());
+		companyService.getCompanyNames();
 	}
 	
 	@Test
@@ -276,7 +276,7 @@ public class CompanyServiceImplTest {
 				will(returnValue(new ArrayList<Company>()));
 			}
 		});
-		CompanyApiResponse response = companyService.getCompanyNames(new CompanyApiRequest());
+		CompanyApiResponse response = companyService.getCompanyNames();
 		Assert.assertNotNull("Company Api Response is not null", response);
 		Assert.assertTrue("Company Api Response is successful", response.isSuccess());
 		Assert.assertTrue("Size of data return is 0", (0 == response.getCompanies().size()));
@@ -290,7 +290,7 @@ public class CompanyServiceImplTest {
 				will(returnValue(null));
 			}
 		});
-		CompanyApiResponse response = companyService.getCompanyNames(new CompanyApiRequest());
+		CompanyApiResponse response = companyService.getCompanyNames();
 		Assert.assertNotNull("Company Api Response is not null", response);
 		Assert.assertTrue("Company Api Response is successful", response.isSuccess());
 		Assert.assertTrue("Size of data return is 0", (0 == response.getCompanies().size()));
@@ -307,7 +307,7 @@ public class CompanyServiceImplTest {
 				will(returnValue(buildCompanyDto()));
 			}
 		});
-		CompanyApiResponse response = companyService.getCompanyNames(new CompanyApiRequest());
+		CompanyApiResponse response = companyService.getCompanyNames();
 		Assert.assertNotNull("Company Api Response is not null", response);
 		Assert.assertTrue("Company Api Response is successful", response.isSuccess());
 		Assert.assertTrue("Size of data return is 1", (1 == response.getCompanies().size()));

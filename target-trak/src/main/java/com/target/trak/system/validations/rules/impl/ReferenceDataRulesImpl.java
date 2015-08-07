@@ -162,7 +162,7 @@ public class ReferenceDataRulesImpl implements ReferenceDataRules {
 	}
 
 	@Override
-	public TargetTrakValidationError containsAllowableStatus(final String status) {
+	public TargetTrakValidationError statusContainsAllowableChars(final String status) {
 		if (!"In-active".equals(status) && !"Active".equals(status)) {
 			return new TargetTrakValidationError("status", validationProps.getProperty("status.allowable.values.error"));
 		}

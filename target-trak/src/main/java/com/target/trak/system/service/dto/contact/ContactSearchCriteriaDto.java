@@ -1,6 +1,8 @@
 package com.target.trak.system.service.dto.contact;
 
-public class ContactSearchCriteriaDto {
+import com.target.trak.system.service.dto.common.TargetTrakPagingCriteria;
+
+public class ContactSearchCriteriaDto extends TargetTrakPagingCriteria {
 
 	private String text;
 

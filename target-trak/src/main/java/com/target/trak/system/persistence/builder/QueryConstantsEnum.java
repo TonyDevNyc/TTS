@@ -27,5 +27,11 @@ public enum QueryConstantsEnum {
 		this.value = value;
 	}
 	
-	
+	public static String buildWildcardParameter(final String parameterValue) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(QueryConstantsEnum.WILDCARD.value)
+			.append(parameterValue)
+			.append(QueryConstantsEnum.WILDCARD.value);
+		return builder.toString();
+	}
 }

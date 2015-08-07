@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.target.trak.system.service.dto.referencedata.ReferenceDataApiRequest;
 import com.target.trak.system.service.dto.referencedata.ReferenceDataDto;
-import com.target.trak.system.service.dto.referencedata.ReferenceDataSearchCriteriaDto;
 import com.target.trak.system.validations.TargetTrakValidationError;
 import com.target.trak.system.validations.TargetTrakValidator;
 import com.target.trak.system.validations.rules.ReferenceDataRules;
@@ -38,14 +37,8 @@ public class ReferenceDataValidatorImpl implements TargetTrakValidator<Reference
 			case CREATE:
 				validationErrors.addAll(validateCreate(referenceDataDto));
 				break;
-			case READ_PAGING:
-				validationErrors.addAll(validateReadPaging(request.getSearchCriteria()));
-				break;
 			case UPDATE:
 				validationErrors.addAll(validateUpdate(referenceDataDto));
-				break;
-			case READ_BY_ID:
-				System.out.println("Implementation in progress.");
 				break;
 			case DELETE:
 				validationErrors.addAll(validateDelete(referenceDataDto));
@@ -79,12 +72,6 @@ public class ReferenceDataValidatorImpl implements TargetTrakValidator<Reference
 		validateStatus(validationErrors, status);
 
 		validationErrors.add(referenceDataRules.checkReferenceDataConstraint(id, type, label, value));
-		return validationErrors;
-	}
-
-	private List<TargetTrakValidationError> validateReadPaging(final ReferenceDataSearchCriteriaDto searchCriteria) {
-		List<TargetTrakValidationError> validationErrors = new ArrayList<TargetTrakValidationError>();
-		// TODO - finish validations
 		return validationErrors;
 	}
 
@@ -147,7 +134,7 @@ public class ReferenceDataValidatorImpl implements TargetTrakValidator<Reference
 		TargetTrakValidationError statusError = referenceDataRules.isStatusEmpty(status);
 		if (statusError == null) {
 			validationErrors.add(referenceDataRules.isStatusValidLength(status));
-			validationErrors.add(referenceDataRules.containsAllowableStatus(status));
+			validationErrors.add(referenceDataRules.statusContainsAllowableChars(status));
 		} else {
 			validationErrors.add(statusError);
 		}

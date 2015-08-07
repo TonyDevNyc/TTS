@@ -32,5 +32,5 @@ public interface ReferenceDataRules {
 	
 	public TargetTrakValidationError isStatusValidLength(final String status);
 	
-	public TargetTrakValidationError containsAllowableStatus(final String status);
+	public TargetTrakValidationError statusContainsAllowableChars(final String status);
 }

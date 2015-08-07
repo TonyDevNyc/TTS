@@ -2,10 +2,11 @@ package com.target.trak.system.validations.rules.impl;
 
 import java.util.Properties;
 
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.target.trak.system.validations.TargetTrakValidationError;
 import com.target.trak.system.validations.rules.PhoneNumberRules;
+import com.target.trak.system.validations.util.ValidationsUtil;
 
 public class PhoneNumberRulesImpl implements PhoneNumberRules {
 
@@ -30,9 +31,17 @@ public class PhoneNumberRulesImpl implements PhoneNumberRules {
 
 	@Override
 	public TargetTrakValidationError phoneContainsDigitsAndDashOnly(final String telephoneNumber) throws IllegalArgumentException {
-		String regex = "^[0-9]\\d{2}-\\d{3}-\\d{4}$";
-		if (!telephoneNumber.matches(regex)) {
-			return new TargetTrakValidationError("telephoneNumber", genericValidationProps.getProperty("phoneNumber.allowable.chars.error"));
+		if (StringUtils.isNotBlank(telephoneNumber)) {
+			String allowableChars = genericValidationProps.getProperty("phoneNumber.allowable.chars");
+
+			if (!StringUtils.isAlpha(telephoneNumber)) {
+				String nonAlphaChars = ValidationsUtil.getNonAlphaCharacters(telephoneNumber);
+				char[] allowableSpecialChars = allowableChars.toCharArray();
+
+				if (!ValidationsUtil.containsAllowableSpecialChars(nonAlphaChars, allowableSpecialChars)) {
+					return new TargetTrakValidationError("telephoneNumber", genericValidationProps.getProperty("phoneNumber.allowable.chars.error"));
+				}
+			}
 		}
 		return null;
 	}

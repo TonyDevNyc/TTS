@@ -7,6 +7,7 @@ import com.target.trak.system.service.dto.company.CompanyDto;
 import com.target.trak.system.service.dto.company.CompanySearchCriteriaDto;
 import com.target.trak.system.web.forms.SearchCompanyForm;
 import com.target.trak.system.web.views.CompanyItem;
+import com.target.trak.system.web.views.NameValuePair;
 
 public interface CompanyHelper {
 
@@ -19,4 +20,6 @@ public interface CompanyHelper {
 	public CompanyItem getCompanyById(final long id);
 	
 	public CompanyDto buildCompanyDto(final CompanyItem company, final User user);
+	
+	public List<NameValuePair> getListOfAllCompanies();
 }

@@ -70,6 +70,7 @@ public class ContactServiceImpl extends BaseTargetTrakService implements Contact
 			List<ContactDto> dtos = null;
 			List<Contact> contacts = null;
 			if (totalSize > 0) {
+				logger.info("Contact Search Criteria count found at least 1 contact");
 				contacts = contactDao.selectContactsByCriteria(criteria);
 			}
 			dtos = convertEntitiesToDtoList(contacts);

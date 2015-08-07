@@ -13,6 +13,7 @@ import com.target.trak.system.service.dto.company.CompanySearchCriteriaDto;
 import com.target.trak.system.util.DateUtil;
 import com.target.trak.system.web.forms.SearchCompanyForm;
 import com.target.trak.system.web.views.CompanyItem;
+import com.target.trak.system.web.views.NameValuePair;
 import com.target.trak.system.web.views.helper.CompanyHelper;
 
 public class CompanyHelperImpl implements CompanyHelper {
@@ -99,8 +100,23 @@ public class CompanyHelperImpl implements CompanyHelper {
 		return dto;
 	}
 
+	@Override
+	public List<NameValuePair> getListOfAllCompanies() {
+		CompanyApiResponse response = companyService.getCompanyNames();
+		List<NameValuePair> list = new ArrayList<NameValuePair>();
+		
+		if (response.isSuccess()) {
+			List<CompanyDto> companies = response.getCompanies();
+			if (companies != null && !companies.isEmpty()) {
+				for (CompanyDto company : companies) {
+					list.add(new NameValuePair(company.getName(), String.valueOf(company.getId())));
+				}
+			}
+		}
+		return list;
+	}
+
 	public void setCompanyService(CompanyService companyService) {
 		this.companyService = companyService;
 	}
-
 }
