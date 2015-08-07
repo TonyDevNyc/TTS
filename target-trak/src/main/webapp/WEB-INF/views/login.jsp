@@ -13,7 +13,7 @@
 <body>
 	<div class="container">
 	    <div class="row">
-	        <div class="col-sm-6 col-md-4 col-md-offset-4">
+	        <div class="col-md-4 col-md-offset-4">
     	        <h1 class="text-center login-title">Target-Trak Login</h1>
             	<div class="account-wall">
             		<c:if test="${not empty param.invalidcreds}">
