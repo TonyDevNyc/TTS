@@ -50,3 +50,17 @@ function cancelEditCompany() {
 function submitCompanySearchForm() {
 	$("#searchCompanyForm").submit();
 }
+
+function submitContactSearchForm() {
+	$("#searchContactForm").submit();
+}
+
+function backToContactSearchResults() {
+	$("#viewContactItemForm").attr("action", '/target-trak/backToContactSearchResults.htm');
+	$("#viewContactItemForm").submit();
+}
+
+function cancelEditContact() {
+	$("#editContactItemForm").attr("action", '/target-trak/cancelEditContact.htm');
+	$("#editContactItemForm").submit();
+}
