@@ -34,7 +34,9 @@
 				<bean id="companyDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.CompanyDtoToEntityConverter" />
 				<bean id="companyEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.CompanyEntityToDtoConverter" />
 				<bean id="companySearchCriteriaDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.CompanySearchCriteriaDtoToEntityConverter" />
-				
+				<bean id="contactEntityToDtoConverter" class="com.target.trak.system.service.dto.converters.ContactEntityToDtoConverter" />
+				<bean id="contactDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.ContactDtoToEntityConverter" />
+				<bean id="contactSearchCriteriaDtoToEntityConverter" class="com.target.trak.system.service.dto.converters.ContactSearchCriteriaDtoToEntityConverter" />
 			</set>
 		</property>
 	</bean>
@@ -60,5 +62,11 @@
 		<property name="companyDao" ref="companyDao" />
 		<property name="conversionService" ref="conversionService" />
 		<property name="validator" ref="companyValidator" />
+	</bean>
+	
+	<bean id="contactService" class="com.target.trak.system.service.impl.contact.ContactServiceImpl">
+		<property name="contactDao" ref="contactDao" />
+		<property name="conversionService" ref="conversionService" />
+		<property name="validator" ref="contactValidator" />
 	</bean>
 </beans>

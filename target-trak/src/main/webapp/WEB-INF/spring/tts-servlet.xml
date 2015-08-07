@@ -46,8 +46,6 @@
 	
 	<bean id="menuBuilder" class="com.target.trak.system.web.builders.impl.MenuBuilderImpl" />
 
-	<bean id="processServiceController" class="com.target.trak.system.web.controllers.ProcessServiceController" />
-
 	<bean id="loginController" class="com.target.trak.system.web.controllers.security.LoginController" />
 	
 	<bean id="homepageController" class="com.target.trak.system.web.controllers.HomepageController">
@@ -91,5 +89,20 @@
 		<property name="viewHelper" ref="referenceDataViewHelper" />
 		<property name="companyViewHelper" ref="companyViewHelper" />
 	</bean>
+	
+	<bean id="contactViewHelper" class="com.target.trak.system.web.views.helper.impl.ContactViewHelperImpl">
+		<property name="contactService" ref="contactService" />
+	</bean>
+	
+	<bean id="contactController" class="com.target.trak.system.web.controllers.contact.ContactController">
+		<property name="contactService" ref="contactService" />
+		<property name="contactViewHelper" ref="contactViewHelper" />
+		<property name="pagingBuilder" ref="pagingBuilder" />
+		<property name="targetTrakExceptionHandler" ref="targetTrakExceptionHandler" />
+		<property name="referenceDataViewHelper" ref="referenceDataViewHelper" />
+		<property name="companyViewHelper" ref="companyViewHelper" />
+	</bean>
+	
+	<bean id="processServiceController" class="com.target.trak.system.web.controllers.matter.ProcessServiceController" />
 
 </beans>
